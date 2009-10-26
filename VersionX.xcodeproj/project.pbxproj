@@ -6,13 +6,38 @@
 	objectVersion = 45;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		E84A5B1B1094281600852509 /* VersionX (Generate Info.plist Prefix) */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = E84A5B1E1094283400852509 /* Build configuration list for PBXAggregateTarget "VersionX (Generate Info.plist Prefix)" */;
+			buildPhases = (
+				E84A5B1A1094281600852509 /* Run Script - VersionX */,
+			);
+			dependencies = (
+			);
+			name = "VersionX (Generate Info.plist Prefix)";
+			productName = "VersionX (Generate Info.plist Prefix)";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* VersionXAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* VersionXAppDelegate.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		E84A5B3910942A4A00852509 /* VersionXController.m in Sources */ = {isa = PBXBuildFile; fileRef = E84A5B3810942A4A00852509 /* VersionXController.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E84A5B1F1094292800852509 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E84A5B1B1094281600852509;
+			remoteInfo = "VersionX (Generate Info.plist Prefix)";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -27,6 +52,10 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* VersionX-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "VersionX-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* VersionX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VersionX.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E84A5B3710942A4A00852509 /* VersionXController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VersionXController.h; sourceTree = "<group>"; };
+		E84A5B3810942A4A00852509 /* VersionXController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VersionXController.m; sourceTree = "<group>"; };
+		E84A5B3A10942A8200852509 /* VersionX-revision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VersionX-revision.h"; sourceTree = "<group>"; };
+		E84A5C0F10944D7800852509 /* VersionX-revision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VersionX-revision.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +75,8 @@
 			children = (
 				256AC3D80F4B6AC300CF3369 /* VersionXAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* VersionXAppDelegate.m */,
+				E84A5B3710942A4A00852509 /* VersionXController.h */,
+				E84A5B3810942A4A00852509 /* VersionXController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -81,6 +112,7 @@
 			children = (
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				E84A5B3A10942A8200852509 /* VersionX-revision.h */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
@@ -91,6 +123,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				E84A5C0F10944D7800852509 /* VersionX-revision.h */,
 				256AC3F00F4B6AF500CF3369 /* VersionX_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
@@ -130,6 +163,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E84A5B201094292800852509 /* PBXTargetDependency */,
 			);
 			name = VersionX;
 			productInstallPath = "$(HOME)/Applications";
@@ -150,6 +184,7 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* VersionX */,
+				E84A5B1B1094281600852509 /* VersionX (Generate Info.plist Prefix) */,
 			);
 		};
 /* End PBXProject section */
@@ -166,6 +201,23 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		E84A5B1A1094281600852509 /* Run Script - VersionX */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script - VersionX";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#\n# Program: Generate Info.plist Prefix for pre-processing in XCode builds\n#          (part of a demonstration of automatic versioning of Cocoa Apps)\n#\n#\n#\n#\n# sed: delete everything after the last occurance\n# http://unix.derkeiler.com/Newsgroups/comp.unix.shell/2006-02/msg00354.html\n\n#\n# Configuration \n#\nset -x\n\n# Use only the binaries from known, default locations.  \n# (Don't just use whatever some cracker leaves lying about.)\n\nMY_INFO_PLIST=\"${SRCROOT}/${PROJECT_NAME}-Info.plist\"\n\nCAT=/bin/cat\nSED=/usr/bin/sed\nRM=/bin/rm\nPLISTBUDDY=/usr/libexec/PlistBuddy\nAWK=/usr/bin/awk\nTOUCH=/usr/bin/touch\n\nGIT=/usr/local/git/bin/git\nHG=/usr/local/bin/hg\nSVN=/usr/bin/cvs\nCVS=/usr/bin/cvs\n\n#\n# Functions\n#\ndie() {\n   local exitcode=\"$1\"\n   local message=\"$2\"\n   echo \"`date` $2\"\n   exit $1\n}\n\n#\n# check to see if we appear to be on a working copy of a commonly used source repository \n#\nwhich_repository() {\n\nWEARE_GIT=0\nWEARE_HG=0\nWEARE_SVN=0\nWEARE_CVS=0\n\nif [ -d \"${SRCROOT}/.git\" ]; then\n\tWEARE_GIT=1\n\techo \"*** found .git\"\nfi\nif [ -d \"${SRCROOT}/.hg\" ]; then\n\tWEARE_HG=1\n\techo \"*** found .hg\"\nfi\nif [ -d \"${SRCROOT}/.svn\" ]; then\n\tWEARE_SVN=1\n\techo \"*** found .svn\"\nfi\nif [ -d \"${SRCROOT}/CVS\" ]; then\n\tWEARE_CVS=1\n\techo \"*** found CVS\"\nfi\t\n\n# there can be only one\nrcs_count=$(($WEARE_GIT + $WEARE_HG + $WEARE_SVN + $WEARE_CVS))\nif ((\"$rcs_count\" < 1)); then\n\techo \"*** this doesn't appear to be a working copy of a repository, cannot get version info\"\n\treturn 1\nelif ((\"$rcs_count\" > 1)); then\n\techo \"*** the build directory appears to include control files for more than one repository\"\n\treturn 1\nelse \n\treturn 0\nfi\n\n}\n\n#\n# TODO - sanity check for git\n#\ngit_sanity() {\n\n\t# is the git binary available and executable?\n\t# if we ask a simple question of this archive, do we get a reasonable answer?\n\t# $ git status\n\t#\tfatal: Not a git repository (or any of the parent directories): .git\nreturn 0\n}\n\n\n#\n# git: create the revision file which is compiled into the project\n#\ngit_version_info() {\n    cd \"${PROJECT_DIR}\"\n    VERSION_X_COMMIT_SHORT=\"`$GIT rev-parse --short HEAD`\"\n    VERSION_X_COMMIT_LONG=\"`$GIT rev-parse HEAD`\"\n    VERSION_X_COMMIT_COUNT=\"`$GIT rev-list HEAD | wc -l |$SED -e 's/^ *//'`\"\n    VERSION_X_COMMIT_TAG=\"`$GIT describe`\"\n    ### VERSION_X_BRANCH=\"`git describe --all --contains ${VERSION_X_COMMIT_SHORT}`\"\n    VERSION_X_BRANCH=\"`git show-branch --current | awk '{print $1}'`\"\n    VERSION_X_LONG=\"`$GIT describe | $SED -e 's/\\\\-/\\\\./' -e  's/^v//' -e 's/-.*//'`\"\n    VERSION_X_SHORT=\"`$GIT describe | $SED -e 's/\\\\-/\\\\./' -e  's/^v//' -e 's/-.*//' -e 's/.[^.]*$//'`\"\n}\n\n#\n# git: get lifecycle information (which is encoded in git tag message)\n#\ngit_lifecycle_info() {\n\t# grab these from tag message for this commit\n\t# tag message format is...\n\t#\t:Version Family:LifeCycle Stage:LCS: Anything goes...\n\t#\t:Fluffy Bunny:Alpha:a:\n\t#    :Fluffy Bunny:Beta:b:\n\t#\t:Fluffy Bunny:Release Candidate:RC:\n\t#\t:Fluffy Bunny:General Availability:GA:\n\n\t#  parse the tag's message to get our lifecycle status\n\n    IFS_STORE=${IFS}\t# store the current IFS so we can put it back later\n    IFS=$'\\n' \t\t# reset IFS so we can slurp in the array\n#\ttagarray=(`git tag -n -l --contains ${VERSION_X_COMMIT_SHORT}  | awk '{ split($0,a,\":\"); for (i=1; i<=7; i++) print 'a[i]}'' `)\n\tif tagarray=(`git tag -n -l --contains ${VERSION_X_COMMIT_SHORT}  | awk '{ split($0,a,\":\"); for (i=1; i<=7; i++) print 'a[i]}'' `); then\n\n\t\tIFS=${IFS_STORE}\t# put the original IFS value back\n\n\t\tVERSION_X_FAMILY=\"${tagarray[1]}\"\n\t\tVERSION_X_LIFECYCLE_LONG=\"${tagarray[2]}\"\n\t\tVERSION_X_LIFECYCLE_SHORT=\"${tagarray[3]}\"\n\n\t\t\tif [ \"${VERSION_X_FAMILY}\" = \"\" ]; then\n\t\t\techo 'no tag found for commit ${VERSION_X_COMMIT_SHORT}'\n\t\t\tVERSION_X_FAMILY=\"UNSET\"\n\t\t\tVERSION_X_LIFECYCLE_LONG=\"UNSET\"\n\t\t\tVERSION_X_LIFECYCLE_SHORT=\"UNSET\"\n\t\t\tfi\n\telse\n\t\techo \"received an error while attempting to retrieve or parse the tag message\"\n\tfi\n}\n\n#\n# git: check to see if there are uncommitted changes in this working copy\n#\ngit_status() {\n\n# for git, squeeze out all the lines which begin with a #, last line is short status\nVERSION_X_COMMIT_STATUS_SHORT=\"`$GIT status | sed -e '/^\\#/d'`\"\n\nCLEAN=\"nothing to commit (working directory clean)\"\n\nif [ \"${VERSION_X_COMMIT_STATUS_SHORT}\" = \"${CLEAN}\" ]; then\n\n\tVERSION_X_COMMIT_STATUS=\"Clean\"\nelse\n\tVERSION_X_COMMIT_STATUS=\"Grungy\"\nfi\n\n\n# Before we drop it into the .h file, we need to refilter these strings to quote the double-quote characters\n###\n### WARNING:  That last space between the tick and the back tick, is very important: \n###           `git status | sed -e 's/\\\"/\\\\\\\"/g' `  is not the same as:\n###           `git status | sed -e 's/\\\"/\\\\\\\"/g'`\n###           It seems like it should be, but it's not.  \n###           I discovered that by accident.  Is that evidence for the existence of God?\nVERSION_X_COMMIT_STATUS_SHORT=`$GIT status | sed -e '/^\\#/d' -e 's/\\\"/\\\\\\\"/g' `\nVERSION_X_COMMIT_STATUS_LONG=`$GIT status | perl -p -e 's/\\s+$/ \\\\\\n/g' | sed -e 's/\\\"/\\\\\\\"/g' `\n}\n\n#\n# increment a build count indicator in version.xcconfig file\n#\n#  NOTE:  On a project with more than one developer,\n#\t\t where more than one person may do a Release build,\n#\t\t this doesn't tell you very much.  \n#\t\t Some developers seem to like it, though.\nbuildcount() {\n\n# if the build count file doesn't exist, create it\n\tif ! [ -f \"${SRCROOT}/version.xcconfig\" ]; then\n\t\techo \"VERSION_X_BUILD_COUNT = 0\" > \"${SRCROOT}/version.xcconfig\"\n\tfi\n\n# Don't increment the buildcount unless this is a Release build\n\tif [ \"${BUILD_STYLE}\" != \"Release\" ]; then\n\t\tVERSION_X_BUILD_COUNT=\"UNSET\" \n\t\t# return to main script execution and continue\n\t\treturn 0\n\tfi\n\n# increment the build count\nNEW_COUNT=`${CAT} \"${SRCROOT}/version.xcconfig\" | ${AWK} '/VERSION_X_BUILD_COUNT/ { print $3 + 1 };'` || die 40 \"failed to increment build count file\"\n\n# write the new build count back to the file\n${SED} -i '' \"s/VERSION_X_BUILD_COUNT = .*/VERSION_X_BUILD_COUNT = ${NEW_COUNT}/\" \"${SRCROOT}/version.xcconfig\" || die 41 \"failed to write new build count file\"\n\nVERSION_X_BUILD_COUNT=\"${NEW_COUNT}\" \n${TOUCH} \"${SRCROOT}/version.xcconfig\"\n}\n\n\n#\n# set the keys we need in the Info.plist\n#\n# we should hammer the two keys we need in the Info.plist (for the Finder)\n#     (in case someone cleverly changed our variables into version strings)\n#\t\"I have a cunning plan, M'Lord, which cannot fail.\" -- Blackadder\n#\n#\tCFBundleVersion\t\t\tVERSION_X_PP_LONG\n#\tCFBundleShortVersionString\tVERSION_X_PP_SHORT\n#\nenforce_plist_settings() {\necho \"verifying Info.plist keys...\"\n\n# if key doesn't exist, add the pair\n\n\tif ! `${PLISTBUDDY} -c \"Print CFBundleVersion\" ${MY_INFO_PLIST}  > /dev/null 2>&1`; then\n\t\t${PLISTBUDDY} -c \"Add :CFBundleVersion VERSION_X_PP_LONG\" ${MY_INFO_PLIST}\n\tfi\n\t\n\tif ! `${PLISTBUDDY} -c \"Print CFBundleShortVersionString\" ${MY_INFO_PLIST}  > /dev/null 2>&1`; then\n\t\t${PLISTBUDDY} -c \"Add :CFBundleShortVersionString VERSION_X_PP_SHORT\" ${MY_INFO_PLIST}\n\tfi\n\n# if key exists, but doesn't match, change it\n\t# Read the exist key (if any)\n\tvers_long=`${PLISTBUDDY} -c \"Print CFBundleVersion\" ${MY_INFO_PLIST}`\n\tvers_short=`${PLISTBUDDY} -c \"Print CFBundleShortVersionString\" ${MY_INFO_PLIST}`\n\n\tif ! [ \"$vers_long\" = \"VERSION_X_PP_LONG\" ]; then\n\t\t${PLISTBUDDY} -c \"Set :CFBundleVersion VERSION_X_PP_LONG\" ${MY_INFO_PLIST}\n\tfi\n\n\tif ! [ \"$vers_short\" = \"VERSION_X_PP_SHORT\" ]; then\n\t\t${PLISTBUDDY} -c \"Set :CFBundleShortVersionString VERSION_X_PP_SHORT\" ${MY_INFO_PLIST}\n\tfi\n\n\ttouch \"${MY_INFO_PLIST}\"\n\treturn 0\n}\n\n#\n# create a .h file with macros which will be compiled into the application\n#\ncreate_revision_file_for_compiler() {\nTIMESTAMP=`date`\necho \"creating ${SRCROOT}/${PROJECT_NAME}-revision.h to define macros for the application\"\n$CAT << EOF > \"${SRCROOT}/${PROJECT_NAME}-revision.h\"\n/*\n\tGenerated:  ${TIMESTAMP}\n\tby XCode Build Target:  ${PRODUCT_NAME}\n\tBuild Style: ${BUILD_STYLE}\n\n  \t\t\t\t\t>>> >>> >>> NOTICE <<< <<< <<<  \n\n\t\t\t\t*** Changes made to this file will have no effect.  ***\n\t\t*** There's no point to keeping this file under revision control. ***\n\n\tThis file is automatically generated at build pre-processor time,\n\tby the an XCode Build Target, probably called:  ${PRODUCT_NAME}\n\tTo effect meaningful changes in these macros, (add new ones, change\n\tthe way these are generated, and so forth) you can edit the Run Script\n\tin that Build Target.  The macros contain build-time status and version \n\tinformation, and are available to your running application if you import \n\tthis YourAppName-revision.h file.\n\n*/\n#define VERSION_X_COMMIT_SHORT @\"${VERSION_X_COMMIT_SHORT}\"\n#define VERSION_X_COMMIT_LONG @\"${VERSION_X_COMMIT_LONG}\"\n#define VERSION_X_COMMIT_COUNT @\"${VERSION_X_COMMIT_COUNT}\"\n#define VERSION_X_COMMIT_TAG @\"${VERSION_X_COMMIT_TAG}\"\n#define VERSION_X_BRANCH @\"${VERSION_X_BRANCH}\"\n#define VERSION_X_LONG @\"${VERSION_X_LONG}\"\n#define VERSION_X_SHORT @\"${VERSION_X_SHORT}\"\n#define VERSION_X_FAMILY @\"${VERSION_X_FAMILY}\"\n#define VERSION_X_LIFECYCLE_LONG @\"${VERSION_X_LIFECYCLE_LONG}\"\n#define VERSION_X_LIFECYCLE_SHORT @\"${VERSION_X_LIFECYCLE_SHORT}\"\n#define VERSION_X_BUILD_COUNT @\"${VERSION_X_BUILD_COUNT}\"\n#define VERSION_X_COMMIT_STATUS @\"${VERSION_X_COMMIT_STATUS}\"\n#define VERSION_X_COMMIT_STATUS_SHORT @\"${VERSION_X_COMMIT_STATUS_SHORT}\"\n#define VERSION_X_COMMIT_STATUS_LONG @\"${VERSION_X_COMMIT_STATUS_LONG}\"\nEOF\n\n${TOUCH} \"${SRCROOT}/${PROJECT_NAME}-revision.h\"\n}\n\n#\n# create the revision.h file which is used to pre-process the Info.plist\n#\ncreate_revision_info_file() {\necho \"creating revision info file for preprocessor, which will substitute into the Info.plist...\"\n\n$CAT << EOF > \"${PROJECT_TEMP_DIR}/revision.h\"\n/* This file is automatically generated by \"Generate Info.plist Prefix\" Build Target */\n#define VERSION_X_PP_LONG ${VERSION_X_LONG}\n#define VERSION_X_PP_SHORT ${VERSION_X_SHORT}\nEOF\n\ntouch \"${PROJECT_TEMP_DIR}/revision.h\"\n}\n\n#\n# Main\n#\n\nwhich_repository || die 10 \"Found more than, or less than, one RCS directory: .git, .svn, .hg, CVS\"\n\nif [ ${WEARE_GIT} ]; then\n\techo \"getting version information from git\"\n\tgit_sanity || die \"*** This project directory doesn't appear to be a valid working copy (git)\"\n\tgit_version_info || die 20 \"*** Collecting version info from git failed!\"\n\tgit_lifecycle_info || die 21 \"*** Failed to get lifecycle info from git tag!\"\n\tgit_status || die 22 \"*** Not able to get the status for git working directory\"\n\nelif [ ${WEARE_HG} ]; then\n\techo \"getting version information from hg\"\n\techo \"ooops, i lied... hg functions not yet implemented.\"\n\nelif [ ${WEARE_SVN} ]; then\n\techo \"getting version information from svn\"\n\techo \"ooops, i lied... svn functions not yet implemented.\"\n\nelif [ ${WEARE_CVS} ]; then\n\techo \"getting version information from cvs\"\n\techo \"ooops, i lied... cvs functions not yet implemented.\"\n\nfi\n\n\n# these steps are independent of RCS system\nbuildcount || die 23 \"*** Incrementing build count failed!\"\nenforce_plist_settings || die 24 \"*** Merging keys into Info.plist failed!\"\ncreate_revision_info_file || die 25 \"*** Creating revision info file failed!\"\ncreate_revision_file_for_compiler || die 26 \"*** Creating revision.h file for compiler failed!\"\n\nexit 0\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -173,10 +225,19 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* VersionXAppDelegate.m in Sources */,
+				E84A5B3910942A4A00852509 /* VersionXController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E84A5B201094292800852509 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E84A5B1B1094281600852509 /* VersionX (Generate Info.plist Prefix) */;
+			targetProxy = E84A5B1F1094292800852509 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
@@ -210,6 +271,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = VersionX_Prefix.pch;
 				INFOPLIST_FILE = "VersionX-Info.plist";
+				INFOPLIST_PREFIX_HEADER = $PROJECT_TEMP_DIR/revision.h;
+				INFOPLIST_PREPROCESS = YES;
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = VersionX;
 			};
@@ -224,6 +287,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = VersionX_Prefix.pch;
 				INFOPLIST_FILE = "VersionX-Info.plist";
+				INFOPLIST_PREFIX_HEADER = $PROJECT_TEMP_DIR/revision.h;
+				INFOPLIST_PREPROCESS = YES;
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = VersionX;
 			};
@@ -232,11 +297,14 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_PREFIX_HEADER = $PROJECT_TEMP_DIR/revision.h;
+				INFOPLIST_PREPROCESS = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
@@ -248,12 +316,83 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_PREFIX_HEADER = $PROJECT_TEMP_DIR/revision.h;
+				INFOPLIST_PREPROCESS = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
 			};
 			name = Release;
+		};
+		E84A5B1C1094281600852509 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "VersionX (Generate Info.plist Prefix)";
+			};
+			name = Debug;
+		};
+		E84A5B1D1094281600852509 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "VersionX (Generate Info.plist Prefix)";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		E84A5B461094312300852509 /* Analyzer */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_PREFIX_HEADER = $PROJECT_TEMP_DIR/revision.h;
+				INFOPLIST_PREPROCESS = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Analyzer;
+		};
+		E84A5B471094312300852509 /* Analyzer */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = VersionX_Prefix.pch;
+				INFOPLIST_FILE = "VersionX-Info.plist";
+				INFOPLIST_PREFIX_HEADER = $PROJECT_TEMP_DIR/revision.h;
+				INFOPLIST_PREPROCESS = YES;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = VersionX;
+			};
+			name = Analyzer;
+		};
+		E84A5B481094312300852509 /* Analyzer */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "VersionX (Generate Info.plist Prefix)";
+			};
+			name = Analyzer;
 		};
 /* End XCBuildConfiguration section */
 
@@ -262,6 +401,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4B08A954540054247B /* Debug */,
+				E84A5B471094312300852509 /* Analyzer */,
 				C01FCF4C08A954540054247B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -271,7 +411,18 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
+				E84A5B461094312300852509 /* Analyzer */,
 				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E84A5B1E1094283400852509 /* Build configuration list for PBXAggregateTarget "VersionX (Generate Info.plist Prefix)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E84A5B1C1094281600852509 /* Debug */,
+				E84A5B481094312300852509 /* Analyzer */,
+				E84A5B1D1094281600852509 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
