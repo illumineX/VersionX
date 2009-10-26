@@ -111,12 +111,12 @@
 	//	[options  addEntriesFromDictionary:[[NSDictionary alloc] initWithObjectsAndKeys: myAboutVersion, @"Version", nil]]; 
 	//} 
 
-	NSMutableDictionary* options  = [[NSMutableDictionary alloc] init];
+	NSMutableDictionary* options  = [[[NSMutableDictionary alloc] init] autorelease];
 	if(myVersion && myApplicationVersion){ 		
-		[options addEntriesFromDictionary:[[NSDictionary alloc] initWithObjectsAndKeys: 
+		[options addEntriesFromDictionary:[[[NSDictionary alloc] initWithObjectsAndKeys: 
 					myApplicationVersion, @"ApplicationVersion",
 					myVersion, @"Version", 
-					nil]]; 
+					nil] autorelease]]; 
 	}
 	
 	
@@ -126,7 +126,7 @@
 	//then write it back, appending " (DEBUG)"
 	NSString *xversionappnamedebug = [NSString stringWithFormat:@"%@ (DEBUG)", xversionappname];
 	NSLog(@"VersionX App Name for build styles other than Release: %@", xversionappnamedebug);
-	[options  addEntriesFromDictionary:[[NSDictionary alloc] initWithObjectsAndKeys: xversionappnamedebug, @"ApplicationName", nil]]; 
+	[options  addEntriesFromDictionary:[[[NSDictionary alloc] initWithObjectsAndKeys: xversionappnamedebug, @"ApplicationName", nil] autorelease]]; 
 #endif 
 	
 #if DEBUG
