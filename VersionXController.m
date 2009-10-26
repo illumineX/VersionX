@@ -93,25 +93,35 @@
 	NSLog(@"VersionX Commit Status Long: %@", VERSION_X_COMMIT_STATUS_LONG);	
 #endif
 	
-	NSMutableDictionary* options  = [[NSMutableDictionary alloc] init]; 
+	// Assemble the version strings we want to use for display in the About panel...
+
+	// read the current application name from the dictionary...
+	NSString* xversionappname = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+	NSLog(@"VersionX App Name: %@", xversionappname);
+	
 	// Customize this!
-	// Assemble the version string we want to use for display in the About panel...
-
-	NSString *myAboutVersion = [NSString stringWithFormat:@"%@:%@ \"%@\"", VERSION_X_COMMIT_SHORT, VERSION_X_COMMIT_COUNT, VERSION_X_COMMIT_STATUS ];
-	if(myAboutVersion) { 
-		[options  addEntriesFromDictionary:[[NSDictionary alloc] initWithObjectsAndKeys: myAboutVersion, @"Version", nil]]; 
-	} 
-
-			
+	// assemble the "Marketing Version" e.g. "Safari 2.1"
+	NSString *myApplicationVersion = [NSString stringWithFormat:@"%@ %@ %@%@", xversionappname, VERSION_X_SHORT, VERSION_X_LIFECYCLE_SHORT, VERSION_X_COMMIT_COUNT];
 	
-	
+	// Customize this!
+	// assemble the "Build Version" 
+	NSString *myVersion = [NSString stringWithFormat:@"%@:%@ \"%@\"", VERSION_X_COMMIT_SHORT, VERSION_X_COMMIT_COUNT, VERSION_X_COMMIT_STATUS ];
+
+	//	if(myVersion) { 
+	//	[options  addEntriesFromDictionary:[[NSDictionary alloc] initWithObjectsAndKeys: myAboutVersion, @"Version", nil]]; 
+	//} 
+
+	NSMutableDictionary* options  = [[NSMutableDictionary alloc] init];
+	if(myVersion && myApplicationVersion){ 		
+		[options addEntriesFromDictionary:[[NSDictionary alloc] initWithObjectsAndKeys: 
+					myApplicationVersion, @"ApplicationVersion",
+					myVersion, @"Version", 
+					nil]]; 
+	}
 	
 	
 #ifdef DEBUG
 	// adding (DEBUG) after the app name in a Debug build, should be abstracted
-	// read the current application name from the dictionary...
-	NSString* xversionappname = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
-	NSLog(@"VersionX App Name: %@", xversionappname);
 	
 	//then write it back, appending " (DEBUG)"
 	NSString *xversionappnamedebug = [NSString stringWithFormat:@"%@ (DEBUG)", xversionappname];
@@ -127,8 +137,8 @@
 #endif
 	
 	
-	
-	[NSApp orderFrontStandardAboutPanelWithOptions:options ]; 
+	// [NSApp orderFrontStandardAboutPanelWithOptions:options ]; 	
+	[[NSApplication sharedApplication] orderFrontStandardAboutPanelWithOptions:options];
 	[pool drain];
 	return;
 } 
