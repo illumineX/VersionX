@@ -48,6 +48,80 @@
 
 
 @implementation VersionXController
+/*!
+    @method     lifecycleFancyAbbreviation:
+    @abstract   Receive a VERSION_X_LIFECYCLE_SHORT string and send back the fancy greek letter representing the lifecycle stage
+    @discussion There are two comonly used general sequences for software lifecycle.
+ 
+ a dictionary for translating ascii symbols for lifecycle stages into fancy greek symbols
+
+		xversionlifecyclestage  should be one of: 
+			UNSET						?		λ42  // Lambda - In formal language theory and computer science, the empty string.
+			Development/Experimental	DEV	/	χ42
+			Alpha/Unstable				a42 /	α42  
+			Beta/Stable					b42 /	β42
+			Release Candiate			RC
+			Release to Manufacturing	RTM
+			General Availability		GA
+
+			Stable							σ	Sigma  (signifies "quality")
+			Unstable						δ	Delta (signifies "change")
+
+	@todo:  the labels for life cycle stages should be enforced by the tool chain
+*/
+- (NSString *)lifecycleFancyAbbreviation:(NSString *)lifecycleShort {
+	
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	NSString *lambda = @"λ";
+	
+	// if the Life Cycle abbreviation is either "UNSET" or blank, should hand back Lamda @"λ"
+
+	if (([lifecycleShort length] == 0) || (lifecycleShort == @"UNSET")) {
+		return lambda;
+	}
+	// if the Life Cycle abbreviation appears in our table as a key, hand back the fancy greek letter value
+
+	else if(lifecycleShort){ 		
+		NSMutableDictionary* fancyStages  = [[[NSMutableDictionary alloc] init] autorelease];
+		[fancyStages addEntriesFromDictionary:[[[NSDictionary alloc] initWithObjectsAndKeys: 
+											@"λ", @"?", // unknown (how to indicate a Lambda at tag time)
+											@"χ", @"x", // experimental
+											@"χ", @"dev", // experimental
+											@"χ", @"devel", // experimental
+											@"α", @"a", // alpha
+											@"β", @"b", // beta
+											@"χ", @"X", // experimental
+											@"α", @"A", // alpha
+											@"β", @"B", // beta
+											
+											// open-source-style stable / unsable branches 
+											@"δ", @"u", // unstable
+											@"σ", @"s", // stable
+											@"Δ", @"U", // Unstable
+											@"Σ", @"S", // Stable 
+											
+											// Easer eggs, loosely justified on the basis of an alpha/mu/omega concept for stage names)
+											@"μ", @"moo", // Μμ (for sra, and pohl, for different reasons)
+											@"Μ", @"MOO", // Μμ
+											@"ω", @"o",		// omega
+											@"Ω", @"O",		// Omega
+											nil] autorelease]]; 
+		NSString* lifecycleShortFancy = [fancyStages objectForKey: lifecycleShort];
+#if DEBUG
+		NSLog(@"lifecycleFancyAbbreviation from: %@ to %@", lifecycleShort, lifecycleShortFancy);
+#endif
+		return lifecycleShortFancy;
+	}
+	else {
+		// Customize this!
+		// if the Life Cycle abbreviation arrived set to anything else at tag time, we have a choice to make.
+		// or hand it back, unchanged (they might have their own convention)
+		// return lifecycleShort;
+		// set it to lambda to enforce use of a commonly recognized convention 
+		[pool drain];
+		return lambda;
+	}
+}
 
 - (IBAction)showAboutPanel:(id)sender { 
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
@@ -92,6 +166,9 @@
 	NSLog(@"VersionX Commit Status Short: %@", VERSION_X_COMMIT_STATUS_SHORT);
 	NSLog(@"VersionX Commit Status Long: %@", VERSION_X_COMMIT_STATUS_LONG);	
 #endif
+
+	// translate the Life Cycle Abreviation into fancy greek for display 
+	NSString* myLifeCycleAbreviation = [self lifecycleFancyAbbreviation:VERSION_X_LIFECYCLE_SHORT];
 	
 	// Assemble the version strings we want to use for display in the About panel...
 
@@ -100,11 +177,11 @@
 	NSLog(@"VersionX App Name: %@", xversionappname);
 	
 	// Customize this!
-	// assemble the "Marketing Version" e.g. "Safari 2.1"
-	NSString *myApplicationVersion = [NSString stringWithFormat:@"%@ %@ %@%@", xversionappname, VERSION_X_SHORT, VERSION_X_LIFECYCLE_SHORT, VERSION_X_COMMIT_COUNT];
+	// assemble the "Marketing Version" e.g. "Safari 2.1 β42"
+	NSString *myApplicationVersion = [NSString stringWithFormat:@"%@ %@ %@%@", xversionappname, VERSION_X_SHORT, myLifeCycleAbreviation, VERSION_X_COMMIT_COUNT];
 	
 	// Customize this!
-	// assemble the "Build Version" 
+	// assemble the "Build Version" e.g. (61f95c8:12 "Dirty")
 	NSString *myVersion = [NSString stringWithFormat:@"%@:%@ \"%@\"", VERSION_X_COMMIT_SHORT, VERSION_X_COMMIT_COUNT, VERSION_X_COMMIT_STATUS ];
 
 	//	if(myVersion) { 
