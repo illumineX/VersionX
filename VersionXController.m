@@ -16,7 +16,26 @@
 					which works with the standard Mac OS X "About Panel" for a Cocoa 
 					Application project.  
 
-				To release a new version, add a git tag of the form: 
+				To release a new version, add a git tag using a simple naming convention:
+ 
+ % git tag -a v0.0.1 -m ":Product Family:Life Cycle Stage:LCS: Any additional message or comment... " 
+ 
+	Product Family
+	This is a marketing or code name "Snow Leopeord" or "Cairo"
+	
+	Life Cycle Stage:LCS
+	This is a name for which stage of the lifecycle the build falls into, 
+	followed by a short abbreviation for it.
+		Development:x
+		Experimental:x
+		Alpha:a
+		Beta:b
+		Release Candidate:RCS
+		General Availability:GA
+ 
+		Stable:s
+		Unstable:u
+ 
 					v1.2.3
 				then build. The system will handle more or fewer digits, such as v1.2, or
 				v1.2.3.4, or for example, in a reasonable way.
@@ -41,9 +60,6 @@
 					This strategy would allow for easier integration into applications 
 					which use custom About panels.
  
-	@bugs		The Run Script which genreates the header files doesn't yet know
-					how to parse the tag message (comment) field, so this class
-					shows null strings for the Life Cycle values.
 */
 
 
@@ -51,23 +67,40 @@
 /*!
     @method     lifecycleFancyAbbreviation:
     @abstract   Receive a VERSION_X_LIFECYCLE_SHORT string and send back the fancy greek letter representing the lifecycle stage
-    @discussion There are two comonly used general sequences for software lifecycle.
+    @discussion VersionX provides support for the concept of software lifecycle. By following a 
+	simple convention for tagging a release, you can automatically generate version numbers
+	in your about panel which include lifecycle stage information, such as:
  
- a dictionary for translating ascii symbols for lifecycle stages into fancy greek symbols
+		Safari 4.1 α37			<-- alpha 37
+		Safari 4.1 β1			<-- beta 1
+		iChat 3.2 δ88			<-- delta / sigma signifying unstable/stable
+		
+ 
+ Although there exist a great many variations on the concept, and a mindboggling array 
+  of different release practices, there are two comonly used conventions for the
+  stages of software lifecycle.  
+ 
+	Stable / Unstable
+	Experimental / Alpha / Beta / Release Candidate / General Availability 
+ 
+ The VersionXController will translate from ascii symbols representing 
+  the lifecycle stages in the tag message, into fancy greek symbols suitable for display 
+  in your Application's About Panel.
 
 		xversionlifecyclestage  should be one of: 
-			UNSET						?		λ42  // Lambda - In formal language theory and computer science, the empty string.
-			Development/Experimental	DEV	/	χ42
-			Alpha/Unstable				a42 /	α42  
-			Beta/Stable					b42 /	β42
+			UNSET						?		λ  // Lambda - In formal language theory and computer science, the empty string.
+			Development/Experimental	DEV	/	χ
+			Alpha/Unstable				a	/	α  
+			Beta/Stable					b	/	β
 			Release Candiate			RC
 			Release to Manufacturing	RTM
 			General Availability		GA
 
-			Stable							σ	Sigma  (signifies "quality")
-			Unstable						δ	Delta (signifies "change")
+			Stable						s		σ	Sigma  (signifies "quality")
+			Unstable					u		δ	Delta (signifies "change")
 
 	@todo:  the labels for life cycle stages should be enforced by the tool chain
+			probably via a command line tool conceptually similar to agvtool, and accompanying GUI
 */
 - (NSString *)lifecycleFancyAbbreviation:(NSString *)lifecycleShort {
 	
@@ -220,5 +253,40 @@
 	return;
 } 
 
+/*!
+    @method     - (IBAction)showVersionDetailSheet:(id)Sender
+    @abstract   Display the full set of version information on a sheet.
+    @discussion IBOutlets were declared in the VersionXController.h,
+					which we can use here to display the full set of information which
+					was collected at build time.  
+*/
+- (IBAction)showVersionDetailSheet:(id)Sender {
+	[myVersionField setStringValue: @"Not Yet Implemented"];
+	[branchField setStringValue: VERSION_X_BRANCH];
+	[commitTagField setStringValue: VERSION_X_COMMIT_TAG];
+	[commitCountField setStringValue: VERSION_X_COMMIT_COUNT];
+	[commitShortField setStringValue: VERSION_X_COMMIT_SHORT];
+	[commitLongField setStringValue: VERSION_X_COMMIT_LONG];
+	[versionShortField setStringValue: VERSION_X_SHORT];
+	[versionLongField setStringValue: VERSION_X_LONG];
+	[buildDateField setStringValue: VERSION_X_BUILD_DATE];
+	[buildCountField setStringValue: VERSION_X_BUILD_COUNT];
+	[lifecycleLongField setStringValue: VERSION_X_LIFECYCLE_LONG];
+	[lifecycleShortField setStringValue: VERSION_X_LIFECYCLE_SHORT];
+	[lifecycleFamilyField setStringValue: VERSION_X_FAMILY];
+	[commitStatusField setStringValue: VERSION_X_COMMIT_STATUS];
+	[commitStatusShortField setStringValue: VERSION_X_COMMIT_STATUS_SHORT];
+	[commitStatusLongView insertText: VERSION_X_COMMIT_STATUS_LONG];
+	
+	// display the values on the sheet
+	[NSApp beginSheet:versionDetailSheet modalForWindow:mainWindow
+        modalDelegate:self didEndSelector:NULL contextInfo:nil];
 
+}
+// Hide the Version Detail Sheet
+- (IBAction)doneShowingVersionDetailSheet:(id)sender {
+	[versionDetailSheet orderOut:nil];
+    [NSApp endSheet:versionDetailSheet];
+
+}
 @end
