@@ -8,6 +8,7 @@
 
 #import "VersionXController.h"
 #import "VersionX-revision.h"  // this is the build-time generated revision info header
+							   
 
 /*!
     @class		VersionXController
@@ -61,9 +62,87 @@
 					which use custom About panels.
  
 */
-
-
 @implementation VersionXController
+// synthesize the accessor methods (these are readonly, copy)
+@synthesize branch;
+@synthesize commitTag;
+@synthesize commitCount;
+@synthesize commitShort;
+@synthesize commitLong; 
+@synthesize versionShort;
+@synthesize versionLong;
+@synthesize buildCount; 
+@synthesize buildDate;
+@synthesize lifecycleFamily;
+@synthesize lifecycleShort;
+@synthesize lifecycleLong;
+@synthesize commitStatus;
+@synthesize commitStatusShort;
+@synthesize commitStatusLong;
+
+
+-(void)awakeFromNib {    
+	// display a constructed version string in the application main window
+	// (primarily to demonstrate how to use this in a custom About panel)
+	return;
+}
+
+-(id)init {
+	// initialization  
+	
+	//	if (! (self = [super init])) return nil;
+    if (![super init]) return nil;
+
+	
+	// set the instance variables from the macros for greater convenience in this controller
+	
+		//    buildDate = [[NSString alloc] initWithFormat: @"%@", VERSION_X_BUILD_DATE ];
+		buildDate = VERSION_X_BUILD_DATE ;
+	  branch =  VERSION_X_BRANCH;
+    commitTag =  VERSION_X_COMMIT_TAG ;
+    commitCount =  VERSION_X_COMMIT_COUNT  ;
+    commitShort = VERSION_X_COMMIT_SHORT  ;
+    commitLong =   VERSION_X_COMMIT_LONG ;
+    versionShort = VERSION_X_SHORT ;
+    versionLong =  VERSION_X_LONG ;
+    buildCount =  VERSION_X_BUILD_COUNT ;
+    lifecycleFamily =  VERSION_X_FAMILY ;
+    lifecycleLong = VERSION_X_LIFECYCLE_LONG ;
+    lifecycleShort =  VERSION_X_LIFECYCLE_SHORT ;
+    commitStatus =  VERSION_X_COMMIT_STATUS ;
+    commitStatusShort =  VERSION_X_COMMIT_SHORT ;
+    commitStatusLong = VERSION_X_COMMIT_STATUS_LONG ;
+	
+#if DEBUG
+		
+	// The macros are available to use in any class where you import "VersionX-revision.h" (as does the header file for this class).
+	NSLog(@"VersionX Build Date: %@", buildDate);
+	NSLog(@"VersionX Branch: %@", branch);
+	NSLog(@"VersionX Commit Tag: %@", commitTag);
+	NSLog(@"VersionX Commit Count: %@", commitCount);
+	NSLog(@"VersionX Commit Short: %@", commitShort);
+	NSLog(@"VersionX Commit Long: %@", commitLong);
+	NSLog(@"VersionX Version Short: %@", versionShort);
+	NSLog(@"VersionX Version Long: %@", versionLong);
+	NSLog(@"VersionX Build Count: %@", buildCount);
+	
+	// internal code name or cute marketing name for a branch - "Cute Fluffy Bunny" or "Snow Leopard"
+	NSLog(@"VersionX Product Family (Code Name): %@", lifecycleFamily);
+	NSLog(@"VersionX LifeCycle Stage: %@", lifecycleLong);
+	NSLog(@"VersionX LifeCycle Stage Abbreviation: %@", lifecycleShort);
+		
+	// was this build performed on a clean working copy ("Clean"), or do uncommitted changes exist ("Grungy")?
+	NSLog(@"VersionX Commit Status: %@", commitStatus);
+	NSLog(@"VersionX Commit Status Short: %@", commitStatusShort);
+	NSLog(@"VersionX Commit Status Long: %@", commitStatusLong);	
+
+	// Derive the lifecycle string you want to use, like this:
+	NSLog(@"Derived lifecycle string example: %@%@", VERSION_X_LIFECYCLE_SHORT, VERSION_X_COMMIT_COUNT);  // yeilds something like:  α42
+
+#endif
+	
+	return self;
+}
 /*!
     @method     lifecycleFancyAbbreviation:
     @abstract   Receive a VERSION_X_LIFECYCLE_SHORT string and send back the fancy greek letter representing the lifecycle stage
@@ -102,22 +181,19 @@
 	@todo:  the labels for life cycle stages should be enforced by the tool chain
 			probably via a command line tool conceptually similar to agvtool, and accompanying GUI
 */
-- (NSString *)lifecycleFancyAbbreviation:(NSString *)lifecycleShort {
+- (NSString *)lifecycleFancyAbbreviation:(NSString *)myLifecycleShort {
 	
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	NSString *lambda = @"λ";
 	
-	// if the Life Cycle abbreviation is either "UNSET" or blank, should hand back Lamda @"λ"
-
-	if (([lifecycleShort length] == 0) || (lifecycleShort == @"UNSET")) {
-		return lambda;
-	}
 	// if the Life Cycle abbreviation appears in our table as a key, hand back the fancy greek letter value
 
-	else if(lifecycleShort){ 		
+	if(myLifecycleShort){ 		
+		
 		NSMutableDictionary* fancyStages  = [[[NSMutableDictionary alloc] init] autorelease];
 		[fancyStages addEntriesFromDictionary:[[[NSDictionary alloc] initWithObjectsAndKeys: 
-											@"λ", @"?", // unknown (how to indicate a Lambda at tag time)
+											@"λ", @"?", // unknown (use a "?" to indicate a Lambda build, at tag time)
+											@"λ", @"UNSET", // UNSET (short lifecycle field was blank in tag message at tag time, script turns this to UNSET)
+											@"λ", @"", // A blank short lifecycle field probably shouldn't happen, but we set this to Lambda in case it does
 											@"χ", @"x", // experimental
 											@"χ", @"dev", // experimental
 											@"χ", @"devel", // experimental
@@ -133,26 +209,50 @@
 											@"Δ", @"U", // Unstable
 											@"Σ", @"S", // Stable 
 											
+											// common lifecycle stages that don't get translated to greek symbols
+											@"RC", @"RC", // Release Candidate 
+											@"GM", @"GM", // Golden Master
+											@"RTM", @"RTM", // Release to Marketing / Manufacturing
+											@"GA", @"GA", // General Availability
+												// but which do get translated to upper case for nice display
+											@"RC", @"rc", // Release Candidate
+											@"GM", @"gm", // Golden Master
+											@"RTM", @"rtm", // Release to Marketing / Manufacturing
+											@"GA", @"ga", // General Availability
+												
 											// Easer eggs, loosely justified on the basis of an alpha/mu/omega concept for stage names)
 											@"μ", @"moo", // Μμ (for sra, and pohl, for different reasons)
 											@"Μ", @"MOO", // Μμ
 											@"ω", @"o",		// omega
 											@"Ω", @"O",		// Omega
 											nil] autorelease]]; 
-		NSString* lifecycleShortFancy = [fancyStages objectForKey: lifecycleShort];
+		NSString* lifecycleShortFancy = [fancyStages objectForKey: myLifecycleShort];
 #if DEBUG
-		NSLog(@"lifecycleFancyAbbreviation from: %@ to %@", lifecycleShort, lifecycleShortFancy);
+		NSLog(@"lifecycleFancyAbbreviation from: %@ to %@", myLifecycleShort, lifecycleShortFancy);
 #endif
+		//	[fancyStages release];
 		return lifecycleShortFancy;
 	}
 	else {
 		// Customize this!
 		// if the Life Cycle abbreviation arrived set to anything else at tag time, we have a choice to make.
-		// or hand it back, unchanged (they might have their own convention)
-		// return lifecycleShort;
-		// set it to lambda to enforce use of a commonly recognized convention 
+		//
+		// Option A (the default behavior for the VersionX project)
+		// Lambda is the "undefined" lifecycle stage, e.g. we don't know at tag time what stage it is
+		// return lambda to enforce use of a commonly recognized convention
+		// all of your short lifecycle codes must be in the translation table, above
+		//
+		NSString *lambda = @"λ";
 		[pool drain];
 		return lambda;
+		
+		// Option B
+		// ...Or, simply hand it back, unchanged 
+		// (you might have your own convention and want anything else to pass through)
+		//
+		// [pool drain];
+		// return lifecycleShort;
+
 	}
 }
 
@@ -163,59 +263,44 @@
 	
 	// Apple documentation calls this the "Build Version" but the specifics are ambiguous 
 	// This should be equivalent to (and originally created by) the macro VERSION_X_LONG
-	NSString* applebuildversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]; 
+	NSString* appleBuildVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]; 
 	
 	// Apple documentation calls this the "Marketing Version" aka the "2.1" in "MyProduct 2.1"
 	// This should be equivalent to (and originally created by) the macro VERSION_X_SHORT
-	NSString* applemarketingversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; 
+	NSString* appleMarketingVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; 
 	
-#if DEBUG
-	
+#if DEBUG	
 	// Now we can use the strings, like so...
-	NSLog(@"Info.plist Build Version (long): %@", applebuildversion); // fetched from Info.plist
-	NSLog(@"Info.plist Marketing Version (short): %@", applemarketingversion); // fetch from Info.plist
-	
-	
-	// The macros are available to use in any class where you import "VersionX-revision.h" (as does the header file for this class).
-	NSLog(@"VersionX Branch: %@", VERSION_X_BRANCH);
-	NSLog(@"VersionX Commit Tag: %@", VERSION_X_COMMIT_TAG);
-	NSLog(@"VersionX Commit Short: %@", VERSION_X_COMMIT_SHORT);
-	NSLog(@"VersionX Commit Long: %@", VERSION_X_COMMIT_LONG);
-	NSLog(@"VersionX Commit Count: %@", VERSION_X_COMMIT_COUNT);
-	NSLog(@"VersionX Version Short: %@", VERSION_X_SHORT);
-	NSLog(@"VersionX Version Long: %@", VERSION_X_LONG);
-	NSLog(@"VersionX Build Count: %@", VERSION_X_BUILD_COUNT);
-	
-	// internal code name or cute marketing name for a branch - "Cute Fluffy Bunny" or "Snow Leopard"
-	NSLog(@"VersionX Product Family (Code Name): %@", VERSION_X_FAMILY);
-	NSLog(@"VersionX LifeCycle Stage: %@", VERSION_X_LIFECYCLE_LONG);
-	NSLog(@"VersionX LifeCycle Stage Abbreviation: %@", VERSION_X_LIFECYCLE_SHORT);
-	
-	// Derive the lifecycle string you want to use, like this:
-	NSLog(@"%@%@", VERSION_X_LIFECYCLE_SHORT, VERSION_X_COMMIT_COUNT);  // yeilds something like:  α42
-	
-	// was this build performed on a clean working copy ("Clean"), or do uncommitted changes exist ("Grungy")?
-	NSLog(@"VersionX Commit Status: %@", VERSION_X_COMMIT_STATUS);
-	NSLog(@"VersionX Commit Status Short: %@", VERSION_X_COMMIT_STATUS_SHORT);
-	NSLog(@"VersionX Commit Status Long: %@", VERSION_X_COMMIT_STATUS_LONG);	
+	NSLog(@"Info.plist Build Version (long): %@", appleBuildVersion); // fetched from Info.plist
+	NSLog(@"Info.plist Marketing Version (short): %@", appleMarketingVersion); // fetch from Info.plist
 #endif
-
+	
 	// translate the Life Cycle Abreviation into fancy greek for display 
-	NSString* myLifeCycleAbreviation = [self lifecycleFancyAbbreviation:VERSION_X_LIFECYCLE_SHORT];
+	NSString *myLifeCycleAbreviation = [self lifecycleFancyAbbreviation: lifecycleShort];
 	
 	// Assemble the version strings we want to use for display in the About panel...
 
 	// read the current application name from the dictionary...
 	NSString* xversionappname = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
 	NSLog(@"VersionX App Name: %@", xversionappname);
+
 	
 	// Customize this!
+	// The standard About panel uses two bits of information to create the version string.
+	// Suppose you want to do something which encodes a little more information, like this:
+	//		Safari 2.1 β42 (61f95c8:12 "Dirty")
+	//		Which says:
+	//			Marketing version is:  Safari 2.1 (on the web site, in the ads, in the Finder, etc.)
+	//			Beta 42 (w
+	//			Git Commit used to build the product: 61f95c8
+	//			12 commits after the last version tag
+	//			Commit status is "Dirty" because the build took place on a working copy with uncommitted changes.
 	// assemble the "Marketing Version" e.g. "Safari 2.1 β42"
-	NSString *myApplicationVersion = [NSString stringWithFormat:@"%@ %@ %@%@", xversionappname, VERSION_X_SHORT, myLifeCycleAbreviation, VERSION_X_COMMIT_COUNT];
+	NSString *myApplicationVersion = [NSString stringWithFormat:@"%@ %@ %@%@", xversionappname, versionShort, myLifeCycleAbreviation, commitCount];
 	
 	// Customize this!
 	// assemble the "Build Version" e.g. (61f95c8:12 "Dirty")
-	NSString *myVersion = [NSString stringWithFormat:@"%@:%@ \"%@\"", VERSION_X_COMMIT_SHORT, VERSION_X_COMMIT_COUNT, VERSION_X_COMMIT_STATUS ];
+	NSString *myVersion = [NSString stringWithFormat:@"%@:%@ \"%@\"", commitShort, commitCount, commitStatus];
 
 	//	if(myVersion) { 
 	//	[options  addEntriesFromDictionary:[[NSDictionary alloc] initWithObjectsAndKeys: myAboutVersion, @"Version", nil]]; 
@@ -243,7 +328,7 @@
 	// print all key-value pairs from the dictionary
 	NSLog (@"The dictionary for the About panel contains the following key pairs:\n");
 	for ( NSString *key in options )
-		NSLog (@"%@\t\t%@", key, [options  objectForKey: key]);
+		NSLog (@"%@:\t\t\t%@", key, [options  objectForKey: key]);
 #endif
 	
 	
@@ -255,28 +340,28 @@
 
 /*!
     @method     - (IBAction)showVersionDetailSheet:(id)Sender
-    @abstract   Display the full set of version information on a sheet.
+    @abstract   Display the full set of version related macros on a sheet.
     @discussion IBOutlets were declared in the VersionXController.h,
 					which we can use here to display the full set of information which
 					was collected at build time.  
 */
 - (IBAction)showVersionDetailSheet:(id)Sender {
 	[myVersionField setStringValue: @"Not Yet Implemented"];
-	[branchField setStringValue: VERSION_X_BRANCH];
-	[commitTagField setStringValue: VERSION_X_COMMIT_TAG];
-	[commitCountField setStringValue: VERSION_X_COMMIT_COUNT];
-	[commitShortField setStringValue: VERSION_X_COMMIT_SHORT];
-	[commitLongField setStringValue: VERSION_X_COMMIT_LONG];
-	[versionShortField setStringValue: VERSION_X_SHORT];
-	[versionLongField setStringValue: VERSION_X_LONG];
-	[buildDateField setStringValue: VERSION_X_BUILD_DATE];
-	[buildCountField setStringValue: VERSION_X_BUILD_COUNT];
-	[lifecycleLongField setStringValue: VERSION_X_LIFECYCLE_LONG];
-	[lifecycleShortField setStringValue: VERSION_X_LIFECYCLE_SHORT];
-	[lifecycleFamilyField setStringValue: VERSION_X_FAMILY];
-	[commitStatusField setStringValue: VERSION_X_COMMIT_STATUS];
-	[commitStatusShortField setStringValue: VERSION_X_COMMIT_STATUS_SHORT];
-	[commitStatusLongView insertText: VERSION_X_COMMIT_STATUS_LONG];
+	[branchField setStringValue: branch];
+	[commitTagField setStringValue: commitTag];
+	[commitCountField setStringValue: commitCount];
+	[commitShortField setStringValue: commitShort];
+	[commitLongField setStringValue: commitLong];
+	[versionShortField setStringValue: versionShort];
+	[versionLongField setStringValue: versionLong];
+	[buildDateField setStringValue: buildDate];
+	[buildCountField setStringValue: buildCount];
+	[lifecycleLongField setStringValue: lifecycleLong];
+	[lifecycleShortField setStringValue: lifecycleShort];
+	[lifecycleFamilyField setStringValue: lifecycleFamily];
+	[commitStatusField setStringValue: commitStatus];
+	[commitStatusShortField setStringValue: commitStatusShort];
+	[commitStatusLongView insertText: commitStatusLong];
 	
 	// display the values on the sheet
 	[NSApp beginSheet:versionDetailSheet modalForWindow:mainWindow
@@ -289,4 +374,39 @@
     [NSApp endSheet:versionDetailSheet];
 
 }
+
+- (NSString *)vxBuildVersion {
+	// construct our build version and return it in a single string
+	return versionShort;
+}
+- (NSString *)vxMarketingVersion {
+	// construct our marketing version and return it in a string 
+	return versionLong;
+}
+- (NSString *)vxFullVersion {
+	// construct the full version and return it in a string
+	//	by calling vxMarketingVersion and combining it with vxBuildVersion
+	return versionLong;
+}
+/*
+- (void) dealloc
+{
+    [branch release];
+    [commitTag release];
+    [commitCount release];
+    [commitShort release];
+    [commitLong release];
+    [versionShort release];
+    [versionLong release];
+    [buildCount release];
+    [buildDate release];
+    [lifecycleFamily release];
+    [lifecycleShort release];
+    [lifecycleLong release];
+    [commitStatus release];
+    [commitStatusShort release];
+    [commitStatusLong release];
+    [super dealloc];
+}
+*/
 @end
