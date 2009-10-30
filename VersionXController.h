@@ -45,6 +45,9 @@
 // This method translates to fancy greek letters for display
 - (NSString *)lifecycleFancyAbbreviation:lifecycleShort;
 
+// Return the modified application name, if a non-Release build style
+- (NSString *)applicationName;
+
 - (IBAction)showAboutPanel:(id)sender; 
 
 // for the Version Detail Sheet

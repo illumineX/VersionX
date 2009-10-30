@@ -273,11 +273,13 @@
 	// Read the two version keys from the application's info.plist like this:
 	
 	// Apple documentation calls this the "Build Version" but the specifics are ambiguous 
-	// This should be equivalent to (and originally created by) the macro VERSION_X_LONG
+	// The following are equivalent:  
+	//		NSString* appleBuildVersion = VERSION_X_LONG;		// the macro
+	//		NSString* appleBuildVersion = [self versionLong];   // the synthesized getter method
+	//		NSString* appleBuildVersion = versionLong;			// the instance variable
 	NSString* appleBuildVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]; 
 	
 	// Apple documentation calls this the "Marketing Version" aka the "2.1" in "MyProduct 2.1"
-	// This should be equivalent to (and originally created by) the macro VERSION_X_SHORT
 	NSString* appleMarketingVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; 
 	
 #if DEBUG	
@@ -286,14 +288,17 @@
 	NSLog(@"Info.plist Marketing Version (short): %@", appleMarketingVersion); // fetch from Info.plist
 #endif
 	
+	// Assemble the version strings we want to use for display in the About panel...
+
 	// translate the Life Cycle Abreviation into fancy greek for display 
 	NSString *myLifeCycleAbreviation = [self lifecycleFancyAbbreviation: lifecycleShort];
 	
-	// Assemble the version strings we want to use for display in the About panel...
-
-	// read the current application name from the dictionary...
-	NSString* xversionappname = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+	// read the current application name from the application's Info.plist dictionary...
+	NSString *xversionappname = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
 	NSLog(@"VersionX App Name: %@", xversionappname);
+
+	// append build style if we are not "Release", becomes something like:  MyApp (Debug)
+	NSString *myApplicationName = [self applicationName];
 
 	
 	// Customize this!
@@ -311,29 +316,21 @@
 	
 	// Customize this!
 	// assemble the "Build Version" e.g. (61f95c8:12 "Dirty")
-	NSString *myVersion = [NSString stringWithFormat:@"%@:%@ \"%@\"", commitShort, commitCount, commitStatus];
+	NSString *myVersion = [NSString stringWithFormat:@"%@:%@ \"%@\"", commitShort, buildCount, commitStatus];
 
 	//	if(myVersion) { 
 	//	[options  addEntriesFromDictionary:[[NSDictionary alloc] initWithObjectsAndKeys: myAboutVersion, @"Version", nil]]; 
 	//} 
 
+	// construct the options for the Standard About Panel
 	NSMutableDictionary* options  = [[[NSMutableDictionary alloc] init] autorelease];
-	if(myVersion && myApplicationVersion){ 		
-		[options addEntriesFromDictionary:[[[NSDictionary alloc] initWithObjectsAndKeys: 
+	if(myVersion && myApplicationVersion && myApplicationName){ 		
+		[options addEntriesFromDictionary:[[[NSDictionary alloc] initWithObjectsAndKeys:
+					myApplicationName, @"ApplicationName",
 					myApplicationVersion, @"ApplicationVersion",
 					myVersion, @"Version", 
 					nil] autorelease]]; 
 	}
-	
-	
-#ifdef DEBUG
-	// adding (DEBUG) after the app name in a Debug build, should be abstracted
-	
-	//then write it back, appending " (DEBUG)"
-	NSString *xversionappnamedebug = [NSString stringWithFormat:@"%@ (DEBUG)", xversionappname];
-	NSLog(@"VersionX App Name for build styles other than Release: %@", xversionappnamedebug);
-	[options  addEntriesFromDictionary:[[[NSDictionary alloc] initWithObjectsAndKeys: xversionappnamedebug, @"ApplicationName", nil] autorelease]]; 
-#endif 
 	
 #if DEBUG
 	// print all key-value pairs from the dictionary
@@ -341,7 +338,6 @@
 	for ( NSString *key in options )
 		NSLog (@"%@:\t\t\t%@", key, [options  objectForKey: key]);
 #endif
-	
 	
 	// [NSApp orderFrontStandardAboutPanelWithOptions:options ]; 	
 	[[NSApplication sharedApplication] orderFrontStandardAboutPanelWithOptions:options];
@@ -357,7 +353,7 @@
 					was collected at build time.  
 */
 - (IBAction)showVersionDetailSheet:(id)Sender {
-	[myVersionField setStringValue: @"Not Yet Implemented"];
+	//	[myVersionField setStringValue: @"Not Yet Implemented"];
 	[branchField setStringValue: branch];
 	[commitTagField setStringValue: commitTag];
 	[commitCountField setStringValue: commitCount];
@@ -389,17 +385,60 @@
 
 }
 
+- (NSString *)applicationName {
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
+	// to construct the Application Name, for non-Release build styles, we append the build style: (Debug)
+
+	// first we read the current application name from the application's Info.plist dictionary...
+	NSString* xversionappname = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+#if DEBUG
+	NSLog(@"VersionX App Name: %@", xversionappname);
+#endif
+	// for Release build styles, we simply return the name, unmodified
+	if ([buildStyle isEqualToString: @"Release"] == YES) {
+		[pool drain];
+		return xversionappname;
+	}
+	else {
+		// For any other build style, we write it back, appending the build style:  " (Debug)"
+		// But first we convert the build style to upper case for display
+		NSString *displayMyBuildStyle = [buildStyle uppercaseString];
+		NSString *xversionappnameother = [NSString stringWithFormat:@"%@ (%@)", xversionappname, displayMyBuildStyle];
+#if DEBUG
+		NSLog(@"VersionX App Name for build styles other than Release: %@", xversionappnameother);
+#endif
+		// @todo
+		// demo app crashes upon open about panel without this retain, but analyzer thinks it's a leak
+		[xversionappnameother retain];	
+		[pool drain];
+		return xversionappnameother;
+	}
+}
 - (NSString *)vxBuildVersion {
-	// construct our build version and return it in a single string
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	
+// construct our build version and return it in a single string
+
+	[pool drain];
 	return versionShort;
 }
+
 - (NSString *)vxMarketingVersion {
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+
 	// construct our marketing version and return it in a string 
+	
+	[pool drain];
 	return versionLong;
+	
 }
+
 - (NSString *)vxFullVersion {
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	// construct the full version and return it in a string
 	//	by calling vxMarketingVersion and combining it with vxBuildVersion
+	[pool drain];
 	return versionLong;
 }
 
