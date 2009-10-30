@@ -38,15 +38,16 @@
 
 // In addition to the accessors for each bit bit of data from the repositories, 
 //		we want a few methods to support easy integration with custom About panels
-- (NSString *)vxFullVersion; // don't customize this method
-- (NSString *)vxMarketingVersion; // Customize this!
-- (NSString *)vxBuildVersion; // Customize this!
+- (NSString *)fancyFullVersion; // don't customize this method
+- (NSString *)fancyMarketingVersion; // Customize this!
+- (NSString *)fancyBuildVersion; // Customize this!
+
+// Return the modified application name, if a non-Release build style
+- (NSString *)fancyApplicationName;
 
 // This method translates to fancy greek letters for display
 - (NSString *)lifecycleFancyAbbreviation:lifecycleShort;
 
-// Return the modified application name, if a non-Release build style
-- (NSString *)applicationName;
 
 - (IBAction)showAboutPanel:(id)sender; 
 
