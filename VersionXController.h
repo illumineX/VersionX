@@ -10,18 +10,21 @@
 
 @interface VersionXController : NSObject {
 	IBOutlet NSFormCell* myVersionField; // this isn't one of the macros, it's the constructed Build Version
-    IBOutlet NSFormCell* branchField;
+    IBOutlet NSFormCell* buildDateField;
+	IBOutlet NSFormCell* buildUserField;
+	IBOutlet NSFormCell* buildStyleField;
+	IBOutlet NSFormCell* buildArchsField;
+    IBOutlet NSFormCell* buildCountField;
     IBOutlet NSFormCell* commitTagField;
     IBOutlet NSFormCell* commitCountField;
     IBOutlet NSFormCell* commitShortField;
     IBOutlet NSFormCell* commitLongField;
-    IBOutlet NSFormCell* versionShortField;
-    IBOutlet NSFormCell* versionLongField;
-    IBOutlet NSFormCell* buildCountField;
-    IBOutlet NSFormCell* buildDateField;
+    IBOutlet NSFormCell* branchField;
     IBOutlet NSFormCell* lifecycleFamilyField;
     IBOutlet NSFormCell* lifecycleShortField;
     IBOutlet NSFormCell* lifecycleLongField;
+    IBOutlet NSFormCell* versionShortField;
+    IBOutlet NSFormCell* versionLongField;
     IBOutlet NSFormCell* commitStatusField;
     IBOutlet NSFormCell* commitStatusShortField;
     IBOutlet NSTextView* commitStatusLongView;
@@ -49,18 +52,21 @@
 - (IBAction)doneShowingVersionDetailSheet:(id)sender;
 
 
-@property(readonly, copy) NSString* branch;
+@property(readonly, copy) NSString* buildDate;
+@property(readonly, copy) NSString* buildUser;
+@property(readonly, copy) NSString* buildStyle;
+@property(readonly, copy) NSString* buildArchs;
+@property(readonly, copy) NSString* buildCount;
 @property(readonly, copy) NSString* commitTag;
 @property(readonly, copy) NSString* commitCount;
 @property(readonly, copy) NSString* commitShort;
 @property(readonly, copy) NSString* commitLong;
-@property(readonly, copy) NSString* versionShort;
-@property(readonly, copy) NSString* versionLong;
-@property(readonly, copy) NSString* buildCount;
-@property(readonly, copy) NSString* buildDate;
+@property(readonly, copy) NSString* branch;
 @property(readonly, copy) NSString* lifecycleFamily;
 @property(readonly, copy) NSString* lifecycleShort;
 @property(readonly, copy) NSString* lifecycleLong;
+@property(readonly, copy) NSString* versionShort;
+@property(readonly, copy) NSString* versionLong;
 @property(readonly, copy) NSString* commitStatus;
 @property(readonly, copy) NSString* commitStatusShort;
 @property(readonly, copy) NSString* commitStatusLong;

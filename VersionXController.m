@@ -64,18 +64,21 @@
 */
 @implementation VersionXController
 // synthesize the accessor methods (these are readonly, copy)
+@synthesize buildDate;
+@synthesize buildUser;
+@synthesize buildStyle;
+@synthesize buildArchs;
+@synthesize buildCount; 
 @synthesize branch;
 @synthesize commitTag;
 @synthesize commitCount;
 @synthesize commitShort;
 @synthesize commitLong; 
-@synthesize versionShort;
-@synthesize versionLong;
-@synthesize buildCount; 
-@synthesize buildDate;
 @synthesize lifecycleFamily;
 @synthesize lifecycleShort;
 @synthesize lifecycleLong;
+@synthesize versionShort;
+@synthesize versionLong;
 @synthesize commitStatus;
 @synthesize commitStatusShort;
 @synthesize commitStatusLong;
@@ -95,20 +98,21 @@
 
 	
 	// set the instance variables from the macros for greater convenience in this controller
-	
-		//    buildDate = [[NSString alloc] initWithFormat: @"%@", VERSION_X_BUILD_DATE ];
-		buildDate = VERSION_X_BUILD_DATE ;
-	  branch =  VERSION_X_BRANCH;
+	buildDate = VERSION_X_BUILD_DATE ;
+	buildUser = VERSION_X_BUILD_USER ;
+	buildStyle = VERSION_X_BUILD_STYLE ;
+	buildArchs = VERSION_X_BUILD_ARCHS ;
+    buildCount =  VERSION_X_BUILD_COUNT ;
     commitTag =  VERSION_X_COMMIT_TAG ;
     commitCount =  VERSION_X_COMMIT_COUNT  ;
     commitShort = VERSION_X_COMMIT_SHORT  ;
     commitLong =   VERSION_X_COMMIT_LONG ;
+	branch =  VERSION_X_BRANCH;
+    lifecycleFamily =  VERSION_X_FAMILY ;
+    lifecycleShort =  VERSION_X_LIFECYCLE_SHORT ;
+    lifecycleLong = VERSION_X_LIFECYCLE_LONG ;
     versionShort = VERSION_X_SHORT ;
     versionLong =  VERSION_X_LONG ;
-    buildCount =  VERSION_X_BUILD_COUNT ;
-    lifecycleFamily =  VERSION_X_FAMILY ;
-    lifecycleLong = VERSION_X_LIFECYCLE_LONG ;
-    lifecycleShort =  VERSION_X_LIFECYCLE_SHORT ;
     commitStatus =  VERSION_X_COMMIT_STATUS ;
     commitStatusShort =  VERSION_X_COMMIT_SHORT ;
     commitStatusLong = VERSION_X_COMMIT_STATUS_LONG ;
@@ -117,20 +121,27 @@
 		
 	// The macros are available to use in any class where you import "VersionX-revision.h" (as does the header file for this class).
 	NSLog(@"VersionX Build Date: %@", buildDate);
-	NSLog(@"VersionX Branch: %@", branch);
+	NSLog(@"VersionX Build User: %@", buildUser);
+	NSLog(@"VersionX Build Style: %@", buildStyle);
+	NSLog(@"VersionX Build Archs: %@", buildArchs);
+	NSLog(@"VersionX Build Count: %@", buildCount);
 	NSLog(@"VersionX Commit Tag: %@", commitTag);
 	NSLog(@"VersionX Commit Count: %@", commitCount);
 	NSLog(@"VersionX Commit Short: %@", commitShort);
 	NSLog(@"VersionX Commit Long: %@", commitLong);
-	NSLog(@"VersionX Version Short: %@", versionShort);
-	NSLog(@"VersionX Version Long: %@", versionLong);
-	NSLog(@"VersionX Build Count: %@", buildCount);
+	NSLog(@"VersionX Branch: %@", branch);
 	
 	// internal code name or cute marketing name for a branch - "Cute Fluffy Bunny" or "Snow Leopard"
 	NSLog(@"VersionX Product Family (Code Name): %@", lifecycleFamily);
 	NSLog(@"VersionX LifeCycle Stage: %@", lifecycleLong);
 	NSLog(@"VersionX LifeCycle Stage Abbreviation: %@", lifecycleShort);
-		
+
+	// The Info.plist "Marketing Version" (shown by the Finder) 
+	NSLog(@"VersionX Version Short (\"Marketing Version\" from Info.plist, used by Finder): %@", versionShort);
+	
+	// The Info.plist "Build Version" which is used between () by default in the Standard About Panel
+	NSLog(@"VersionX Version Long (\"Build Version\" from Info.plist): (%@)", versionLong);
+
 	// was this build performed on a clean working copy ("Clean"), or do uncommitted changes exist ("Grungy")?
 	NSLog(@"VersionX Commit Status: %@", commitStatus);
 	NSLog(@"VersionX Commit Status Short: %@", commitStatusShort);
@@ -355,6 +366,9 @@
 	[versionShortField setStringValue: versionShort];
 	[versionLongField setStringValue: versionLong];
 	[buildDateField setStringValue: buildDate];
+	[buildUserField setStringValue: buildUser];
+	[buildStyleField setStringValue: buildStyle];
+	[buildArchsField setStringValue: buildArchs];
 	[buildCountField setStringValue: buildCount];
 	[lifecycleLongField setStringValue: lifecycleLong];
 	[lifecycleShortField setStringValue: lifecycleShort];
@@ -388,7 +402,7 @@
 	//	by calling vxMarketingVersion and combining it with vxBuildVersion
 	return versionLong;
 }
-/*
+
 - (void) dealloc
 {
     [branch release];
@@ -408,5 +422,5 @@
     [commitStatusLong release];
     [super dealloc];
 }
-*/
+
 @end
