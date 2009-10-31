@@ -144,7 +144,7 @@
     versionShort = VERSION_X_SHORT ;
     versionLong =  VERSION_X_LONG ;
     commitStatus =  VERSION_X_COMMIT_STATUS ;
-    commitStatusShort =  VERSION_X_COMMIT_SHORT ;
+    commitStatusShort =  VERSION_X_COMMIT_STATUS_SHORT ;
     commitStatusLong = VERSION_X_COMMIT_STATUS_LONG ;
 	
 	// to easily wire up custom about panels
@@ -156,7 +156,6 @@
 	
 #if DEBUG
 		
-	// The macros are available to use in any class where you import "VersionX-revision.h" (as does the header file for this class).
 	NSLog(@"VersionX Build Date: %@", buildDate);
 	NSLog(@"VersionX Build User: %@", buildUser);
 	NSLog(@"VersionX Build Style: %@", buildStyle);
@@ -184,9 +183,12 @@
 	NSLog(@"VersionX Commit Status Short: %@", commitStatusShort);
 	NSLog(@"VersionX Commit Status Long: %@", commitStatusLong);	
 
-	// log the four fancy methods we derive
-	//NSLog(@"My Fancy Vull Version: %@", myFancyBuildVersionView);
-	//NSLog(@"My Fancy Application Name: @" myFancyApplicationName);
+	// log the fancy methods we derive
+	NSLog(@"Fancy Application Name: %@", [self fancyApplicationName]);
+	NSLog(@"Fancy Marketing Version: %@", [self fancyMarketingVersion]);
+	NSLog(@"Fancy Build Version: %@", [self fancyBuildVersion]);
+	NSLog(@"Fancy Full Version: %@", [self fancyFullVersion]);	
+	
 #endif
 	
 	return self;
@@ -291,13 +293,12 @@
 		// all of your short lifecycle codes must be in the translation table, above
 		//
 		NSString *lambda = @"λ";
-		NSLog(@"lambda retain count: %x", [lambda retainCount]);
 		[pool drain];
 		return lambda;
 		
 		// Option B
 		// ...Or, simply hand it back, unchanged 
-		// (you might have your own convention and want anything else to pass through)
+		// (you might have your own convention and want anything undefined to pass through)
 		//
 		// [pool drain];
 		// return lifecycleShort;
@@ -365,6 +366,11 @@
 	return;
 }
 
+- (IBAction) doneShowingCustomAboutPanel:(id)Sender {
+	// it seems like this method might be required in some cases, 
+	// yet it doesn't seem to be required for the demo app.  
+	return;
+}
 /*!
     @method     - (IBAction)showVersionDetailSheet:(id)Sender
     @abstract   Display the full set of version related macros on a sheet.
@@ -460,11 +466,12 @@
 	
 	// read the current application name from the application's Info.plist dictionary...
 	NSString *xversionappname = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
-	NSLog(@"VersionX App Name: %@", xversionappname);
-		
+#if DEBUG
+	NSLog(@"App Name from Info.plist: %@", xversionappname);
+#endif
+	
 	// translate the Life Cycle Abreviation into fancy greek for display 
 	NSString *myLifeCycleAbreviation = [self lifecycleFancyAbbreviation: lifecycleShort];
-	NSLog(@"VersionX Life Cycle Abreviation: %@", myLifeCycleAbreviation);
 
 	// don't display lifecycle stage for the final release, aka General Availability 
 	// (show it only for lambda, alpha, beta, etc.)
