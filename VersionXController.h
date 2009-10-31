@@ -9,7 +9,10 @@
 #import <Cocoa/Cocoa.h>
 
 @interface VersionXController : NSObject {
-	IBOutlet NSFormCell* myVersionField; // this isn't one of the macros, it's the constructed Build Version
+
+	// to wire up the various bits to a form
+	// if you want to use individual fields with a text field, 
+	// simply change the IBOutlet type to NSTextField
     IBOutlet NSFormCell* buildDateField;
 	IBOutlet NSFormCell* buildUserField;
 	IBOutlet NSFormCell* buildStyleField;
@@ -33,23 +36,33 @@
     IBOutlet id versionDetailSheet;
     IBOutlet id mainWindow;
 	
+	// to easily wire up custom about panels
+	IBOutlet NSWindow* customAboutPanel;
+	IBOutlet NSTextField* fancyApplicationNameField;
+	IBOutlet NSTextField* fancyFullVersionField;
+	IBOutlet NSTextField* fancyMarketingVersionField;
+	IBOutlet NSTextField* fancyBuildVersionField;
 }
 
 
 // In addition to the accessors for each bit bit of data from the repositories, 
 //		we want a few methods to support easy integration with custom About panels
-- (NSString *)fancyFullVersion; // don't customize this method
+- (NSString *)fancyFullVersion; // don't customize this method (it's a convenience method which combines the other two)
 - (NSString *)fancyMarketingVersion; // Customize this!
 - (NSString *)fancyBuildVersion; // Customize this!
 
 // Return the modified application name, if a non-Release build style
 - (NSString *)fancyApplicationName;
 
-// This method translates to fancy greek letters for display
+// translate to fancy greek letters for display
 - (NSString *)lifecycleFancyAbbreviation:lifecycleShort;
 
-
+// front a Standard About Panel, with fancy version strings
 - (IBAction)showAboutPanel:(id)sender; 
+
+// front a Custom About Panel, with fancy version strings
+- (IBAction)showCustomAboutPanel:(id)sender; 
+- (IBAction)doneShowingCustomAboutPanel:(id)sender; 
 
 // for the Version Detail Sheet
 - (IBAction)showVersionDetailSheet:(id)sender;

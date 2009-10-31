@@ -63,7 +63,7 @@
  
 */
 @implementation VersionXController
-// synthesize the accessor methods (these are readonly, copy)
+// synthesize the accessor methods
 @synthesize buildDate;
 @synthesize buildUser;
 @synthesize buildStyle;
@@ -85,6 +85,15 @@
 
 
 -(void)awakeFromNib {    
+
+	// to easily wire up custom about panels
+	/*
+	[myFancyApplicationNameField setStringValue: [VersionXController fancyApplicationName] ];
+	[myFancyFullVersionField setStringValue: [VersionXController fancyFullVersion] ];
+	[myFancyMarketingVersionField setStringValue: [VersionXController fancyMarketingVersion] ];
+	[myFancyBuildVersionField setStringValue: [VersionXController fancyBuildVersion] ];
+	*/
+	
 	// display a constructed version string in the application main window
 	// (primarily to demonstrate how to use this in a custom About panel)
 	
@@ -138,6 +147,13 @@
     commitStatusShort =  VERSION_X_COMMIT_SHORT ;
     commitStatusLong = VERSION_X_COMMIT_STATUS_LONG ;
 	
+	// to easily wire up custom about panels
+	//myFancyApplicationName = [self fancyApplicationName];
+	//myFancyFullVersion = [self fancyFullVersion];
+	//myFancyMarketingVersion = [self fancyMarketingVersion];
+	//myFancyBuildVersion = [self fancyBuildVersion];
+	
+	
 #if DEBUG
 		
 	// The macros are available to use in any class where you import "VersionX-revision.h" (as does the header file for this class).
@@ -168,9 +184,9 @@
 	NSLog(@"VersionX Commit Status Short: %@", commitStatusShort);
 	NSLog(@"VersionX Commit Status Long: %@", commitStatusLong);	
 
-	// Derive the lifecycle string you want to use, like this:
-	NSLog(@"Derived lifecycle string example: %@%@", VERSION_X_LIFECYCLE_SHORT, VERSION_X_COMMIT_COUNT);  // yeilds something like:  α42
-
+	// log the four fancy methods we derive
+	//NSLog(@"My Fancy Vull Version: %@", myFancyBuildVersionView);
+	//NSLog(@"My Fancy Application Name: @" myFancyApplicationName);
 #endif
 	
 	return self;
@@ -335,6 +351,20 @@
 	return;
 } 
 
+- (IBAction)showCustomAboutPanel:(id)sender {
+	
+	if ( !customAboutPanel )
+		[NSBundle loadNibNamed:@"CustomAboutPanel" owner:self];
+	
+	// to easily wire up custom about panels
+	[fancyApplicationNameField setStringValue: [self fancyApplicationName] ];
+	[fancyFullVersionField setStringValue: [self fancyFullVersion] ];
+	
+    [customAboutPanel makeKeyAndOrderFront:nil];
+	
+	return;
+}
+
 /*!
     @method     - (IBAction)showVersionDetailSheet:(id)Sender
     @abstract   Display the full set of version related macros on a sheet.
@@ -343,7 +373,14 @@
 					was collected at build time.  
 */
 - (IBAction)showVersionDetailSheet:(id)Sender {
-	//	[myVersionField setStringValue: @"Not Yet Implemented"];
+
+	// show our fancy versions
+	[fancyApplicationNameField setStringValue: [self fancyApplicationName] ];
+	[fancyFullVersionField setStringValue: [self fancyFullVersion] ];
+	[fancyMarketingVersionField setStringValue: [self fancyMarketingVersion] ];
+	[fancyBuildVersionField setStringValue: [self fancyBuildVersion] ];
+
+	// and show the values we get from the repository which we use to construct them
 	[branchField setStringValue: branch];
 	[commitTagField setStringValue: commitTag];
 	[commitCountField setStringValue: commitCount];
@@ -366,13 +403,11 @@
 	// display the values on the sheet
 	[NSApp beginSheet:versionDetailSheet modalForWindow:mainWindow
         modalDelegate:self didEndSelector:NULL contextInfo:nil];
-
 }
 // Hide the Version Detail Sheet
 - (IBAction)doneShowingVersionDetailSheet:(id)sender {
 	[versionDetailSheet orderOut:nil];
     [NSApp endSheet:versionDetailSheet];
-
 }
 
 - (NSString *)fancyApplicationName {
@@ -418,7 +453,8 @@
 
 - (NSString *)fancyMarketingVersion {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-
+	// NSString *myFancyMarketingVersion = [[NSString alloc] init];
+	
 	// construct our marketing version and return it in a string 
 	
 	
@@ -428,22 +464,34 @@
 		
 	// translate the Life Cycle Abreviation into fancy greek for display 
 	NSString *myLifeCycleAbreviation = [self lifecycleFancyAbbreviation: lifecycleShort];
+	NSLog(@"VersionX Life Cycle Abreviation: %@", myLifeCycleAbreviation);
 
-	// Customize This!
-	// now, construct the "Marketing Version" e.g. "Safari 2.1 β42"
-	NSString *myFancyMarketingVersion = [NSString stringWithFormat:@"%@ %@ %@%@", xversionappname, versionShort, myLifeCycleAbreviation, commitCount];
+	// don't display lifecycle stage for the final release, aka General Availability 
+	// (show it only for lambda, alpha, beta, etc.)
+	if ([myLifeCycleAbreviation isEqualToString: @"GA"] == YES) {
+		NSString *myFancyMarketingVersion = [NSString stringWithFormat:@"%@ %@", xversionappname, versionShort];	
+		[myFancyMarketingVersion retain];
+		[pool drain];
+		return [myFancyMarketingVersion autorelease];
 
-	[myFancyMarketingVersion retain];
-	[pool drain];
-	return [myFancyMarketingVersion autorelease];
-	
+	}
+	else {
+		// Customize This!
+		// now, construct the "Marketing Version" e.g. "Safari 2.1 β42"
+		NSString *myFancyMarketingVersion = [NSString stringWithFormat:@"%@ %@ %@%@", xversionappname, versionShort, myLifeCycleAbreviation, commitCount];
+		[myFancyMarketingVersion retain];
+		[pool drain];
+		return [myFancyMarketingVersion autorelease];
+	}
 }
 
 - (NSString *)fancyFullVersion {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	// construct the full version and return it in a string
 	//	by calling vxMarketingVersion and combining it with vxBuildVersion
-	NSString *myFancyFullVersion = (@"%@ %@", [self fancyBuildVersion], [self fancyMarketingVersion]);
+	
+	NSString *myFancyFullVersion = [NSString stringWithFormat:@"%@ (%@)", [self fancyMarketingVersion], [self fancyBuildVersion] ];
+	
 	[myFancyFullVersion retain];
 	[pool drain];
 	return [myFancyFullVersion autorelease];
