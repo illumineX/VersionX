@@ -79,6 +79,7 @@
 @property(readonly, copy) NSString* buildCount;
 @property(readonly, copy) NSString* commitTag;
 @property(readonly, copy) NSString* commitCount;
+@property(readonly, copy) NSString* commitCountSinceTag;  // derived from commitTag, not it's own macro
 @property(readonly, copy) NSString* commitShort;
 @property(readonly, copy) NSString* commitLong;
 @property(readonly, copy) NSString* branch;

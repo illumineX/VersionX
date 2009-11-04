@@ -68,6 +68,7 @@
 @synthesize branch;
 @synthesize commitTag;
 @synthesize commitCount;
+@synthesize commitCountSinceTag;  // derived from commitTag, not it's own macro
 @synthesize commitShort;
 @synthesize commitLong; 
 @synthesize lifecycleFamily;
@@ -96,9 +97,9 @@
 	// initialization  
 	
 	//	if (! (self = [super init])) return nil;
-    if (![super init]) return nil;
-
-	
+    // if (![super init]) return nil;
+	if (self = [super init]) {
+			
 	// set the instance variables from the macros for greater convenience in this controller
 	buildDate = VERSION_X_BUILD_DATE ;
 	buildUser = VERSION_X_BUILD_USER ;
@@ -107,7 +108,19 @@
     buildCount =  VERSION_X_BUILD_COUNT ;
     commitTag =  VERSION_X_COMMIT_TAG ;
     commitCount =  VERSION_X_COMMIT_COUNT  ;
-    commitShort = VERSION_X_COMMIT_SHORT  ;
+    
+	// Commit Count Since Last Tag is derived from the tag (and might therefore be null, in which case we set it to 0)
+	NSArray *split = [VERSION_X_COMMIT_TAG componentsSeparatedByString:@"-"];
+		
+	if ((split != nil) && ([split count] == 3)) {
+		commitCountSinceTag = [split objectAtIndex:1];		
+	}
+	
+	else {
+		commitCountSinceTag = @"0";
+	}
+		
+	commitShort = VERSION_X_COMMIT_SHORT  ;
     commitLong =   VERSION_X_COMMIT_LONG ;
 	branch =  VERSION_X_BRANCH;
     lifecycleFamily =  VERSION_X_FAMILY ;
@@ -160,7 +173,8 @@
 	NSLog(@"Fancy Full Version: %@", [self fancyFullVersion]);	
 	
 #endif
-	
+	}
+
 	return self;
 }
 /*!
@@ -459,16 +473,8 @@
 */
 - (NSString *)fancyMarketingVersion {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	// NSString *myFancyMarketingVersion = [[NSString alloc] init];
 	
 	// construct our marketing version and return it in a string 
-	
-	
-	// read the current application name from the application's Info.plist dictionary...
-	NSString *xversionappname = [[[NSBundle bundleForClass: [self class]] infoDictionary] objectForKey:@"CFBundleName"];
-#if DEBUG
-	NSLog(@"App Name from Info.plist: %@", xversionappname);
-#endif
 	
 	// translate the Life Cycle Abreviation into fancy greek for display 
 	NSString *myLifeCycleAbreviation = [self lifecycleFancyAbbreviation: lifecycleShort];
@@ -476,7 +482,7 @@
 	// don't display lifecycle stage for the final release, aka General Availability 
 	// (show it only for lambda, alpha, beta, etc.)
 	if ([myLifeCycleAbreviation isEqualToString: @"GA"] == YES) {
-		NSString *myFancyMarketingVersion = [NSString stringWithFormat:@"%@ %@", xversionappname, versionShort];	
+		NSString *myFancyMarketingVersion = [NSString stringWithFormat:@"Version %@", versionShort];	
 		[myFancyMarketingVersion retain];
 		[pool drain];
 		return [myFancyMarketingVersion autorelease];
@@ -485,7 +491,7 @@
 	else {
 		// Customize This!
 		// now, construct the "Marketing Version" e.g. "Safari 2.1 β42"
-		NSString *myFancyMarketingVersion = [NSString stringWithFormat:@"%@ %@ %@%@", xversionappname, versionShort, myLifeCycleAbreviation, commitCount];
+		NSString *myFancyMarketingVersion = [NSString stringWithFormat:@"Version %@ %@%@", versionShort, myLifeCycleAbreviation, commitCountSinceTag];
 		[myFancyMarketingVersion retain];
 		[pool drain];
 		return [myFancyMarketingVersion autorelease];
@@ -505,7 +511,7 @@
 	// for Release build styles, we don't display a "Clean" commitStatus...
 	//		example:	(6f5071e:0)
 	if (([buildStyle isEqualToString: @"Release"] == YES) && ([commitStatus isEqualToString: @"Clean"] == YES)) {
-		NSString *myFancyBuildVersion = [NSString stringWithFormat:@"%@:%@", commitShort, buildCount];
+		NSString *myFancyBuildVersion = [NSString stringWithFormat:@"%@:%@", commitShort, commitCountSinceTag];
 		[myFancyBuildVersion retain];
 		[pool drain];
 		return [myFancyBuildVersion autorelease];
@@ -513,7 +519,7 @@
 	else {
 		// For any other build style, or if Grungy, we include the commitStatus...
 		//	example:	(6f5071e:0 "Grungy")
-		NSString *myFancyBuildVersion = [NSString stringWithFormat:@"%@:%@ \"%@\"", commitShort, buildCount, commitStatus];
+		NSString *myFancyBuildVersion = [NSString stringWithFormat:@"%@:%@ \"%@\"", commitShort, commitCountSinceTag, commitStatus];
 		[myFancyBuildVersion retain];
 		[pool drain];
 		return [myFancyBuildVersion autorelease];
