@@ -60,8 +60,10 @@
 */
 @implementation VersionXController
 // synthesize the accessor methods
+@synthesize buildRepository;
 @synthesize buildDate;
 @synthesize buildUser;
+@synthesize buildHost;
 @synthesize buildStyle;
 @synthesize buildArchs;
 @synthesize buildCount; 
@@ -101,8 +103,10 @@
 	if (self = [super init]) {
 			
 	// set the instance variables from the macros for greater convenience in this controller
+	buildRepository = VERSION_X_REPOSITORY;
 	buildDate = VERSION_X_BUILD_DATE ;
 	buildUser = VERSION_X_BUILD_USER ;
+	buildHost = VERSION_X_BUILD_HOST;
 	buildStyle = VERSION_X_BUILD_STYLE ;
 	buildArchs = VERSION_X_BUILD_ARCHS ;
     buildCount =  VERSION_X_BUILD_COUNT ;
@@ -110,6 +114,7 @@
     commitCount =  VERSION_X_COMMIT_COUNT  ;
     
 	// Commit Count Since Last Tag is derived from the tag (and might therefore be null, in which case we set it to 0)
+	// @todo:  This derivation is likely to be specific to Git.  We can use buildRepository to set up cases for this.
 	NSArray *split = [VERSION_X_COMMIT_TAG componentsSeparatedByString:@"-"];
 		
 	if ((split != nil) && ([split count] == 3)) {
@@ -138,9 +143,10 @@
 	
 #if DEBUG
 	NSLog(@"VersionX init method has been called.");
-		
+	NSLog(@"VersionX Build Repository: %@", buildRepository);
 	NSLog(@"VersionX Build Date: %@", buildDate);
 	NSLog(@"VersionX Build User: %@", buildUser);
+	NSLog(@"VersionX Build Host: %@", buildHost);
 	NSLog(@"VersionX Build Style: %@", buildStyle);
 	NSLog(@"VersionX Build Archs: %@", buildArchs);
 	NSLog(@"VersionX Build Count: %@", buildCount);
@@ -396,6 +402,7 @@
 	[versionLongField setStringValue: versionLong];
 	[buildDateField setStringValue: buildDate];
 	[buildUserField setStringValue: buildUser];
+	[buildHostField setStringValue: buildHost];
 	[buildStyleField setStringValue: buildStyle];
 	[buildArchsField setStringValue: buildArchs];
 	[buildCountField setStringValue: buildCount];
@@ -456,19 +463,19 @@
 				Suppose you want to do something which encodes a little more 
 					information about your application version, like this:
  
-					Safari 2.1 β42 (61f95c8:12 "Dirty")
+					Safari 2.1 β42 (61f95c8:12 "Grungy")
 				
 				Which includes two components:
  
 					Marketing Version:		Safari 2.1 β42 
-					Build Version:			(61f95c8:12 "Dirty")
+					Build Version:			(61f95c8:12 "Grungy")
  
 				Which says:
 					Marketing version is:  Safari 2.1 (which you use the web site, in the ads, in the Finder, etc.)
 					Beta 42 (shown in the About Panel)
 					Git Commit at the HEAD of the working copy used to build the product: 61f95c8
 					12 commits after the last version tag  (NOTE: this is the design intent, but the script might be sending us the full commit count)
-					Commit status is "Dirty" because the build took place on a working copy with uncommitted changes.
+					Commit status is "Grungy" because the build took place on a working copy with uncommitted changes.
  
 */
 - (NSString *)fancyMarketingVersion {

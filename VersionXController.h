@@ -10,11 +10,34 @@
 
 @interface VersionXController : NSObject {
 
+	NSString* buildDate;
+	NSString* buildRepository;
+	NSString* buildUser;
+	NSString* buildHost;
+	NSString* buildStyle;
+	NSString* buildArchs;
+	NSString* buildCount;
+	NSString* branch;
+	NSString* commitTag;
+	NSString* commitCountSinceTag;
+	NSString* commitCount;
+	NSString* commitShort;
+	NSString* commitLong;
+	NSString* lifecycleFamily;
+	NSString* lifecycleShort;
+	NSString* lifecycleLong;
+	NSString* versionShort;
+	NSString* versionLong;
+	NSString* commitStatus;
+	NSString* commitStatusShort;
+	NSString* commitStatusLong;
+	
 	// to wire up the various bits to a form
 	// if you want to use individual fields with a text field, 
 	// simply change the IBOutlet type to NSTextField
     IBOutlet NSFormCell* buildDateField;
 	IBOutlet NSFormCell* buildUserField;
+	IBOutlet NSFormCell* buildHostField;
 	IBOutlet NSFormCell* buildStyleField;
 	IBOutlet NSFormCell* buildArchsField;
     IBOutlet NSFormCell* buildCountField;
@@ -71,9 +94,10 @@
 - (IBAction)showVersionDetailSheet:(id)sender;
 - (IBAction)doneShowingVersionDetailSheet:(id)sender;
 
-
+@property(readonly, copy) NSString* buildRepository;
 @property(readonly, copy) NSString* buildDate;
 @property(readonly, copy) NSString* buildUser;
+@property(readonly, copy) NSString* buildHost;
 @property(readonly, copy) NSString* buildStyle;
 @property(readonly, copy) NSString* buildArchs;
 @property(readonly, copy) NSString* buildCount;
