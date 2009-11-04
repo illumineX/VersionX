@@ -56,10 +56,6 @@
 					identified in it's build settings, and have the preprocessor for
 					the Info.plist turned on. 
 
-	@todo		This class should be extended to provide methods which allow you to 
-					ask for version information, rather than including the header file.
-					This strategy would allow for easier integration into applications 
-					which use custom About panels.
  
 */
 @implementation VersionXController
@@ -85,38 +81,14 @@
 
 
 -(void)awakeFromNib {    
-
-	// to easily wire up custom about panels
-	/*
-	[myFancyApplicationNameField setStringValue: [VersionXController fancyApplicationName] ];
-	[myFancyFullVersionField setStringValue: [VersionXController fancyFullVersion] ];
-	[myFancyMarketingVersionField setStringValue: [VersionXController fancyMarketingVersion] ];
-	[myFancyBuildVersionField setStringValue: [VersionXController fancyBuildVersion] ];
-	*/
-	
-	// display a constructed version string in the application main window
-	// (primarily to demonstrate how to use this in a custom About panel)
-	
-	
-	// Read the two version keys from the application's info.plist like this:
-	
-	// Apple documentation calls this the "Build Version" but the specifics are ambiguous 
-	// The following are equivalent:  
-	//		NSString* appleBuildVersion = VERSION_X_LONG;		// the macro
-	//		NSString* appleBuildVersion = [self versionLong];   // the synthesized getter method
-	//		NSString* appleBuildVersion = versionLong;			// the instance variable
-	NSString* appleBuildVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]; 
-	
-	// Apple documentation calls this the "Marketing Version" aka the "2.1" in "MyProduct 2.1"
-	NSString* appleMarketingVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]; 
-	
-#if DEBUG	
-	// Now we can use the strings, like so...
-	NSLog(@"Info.plist Build Version (long): %@", appleBuildVersion); // fetched from Info.plist
-	NSLog(@"Info.plist Marketing Version (short): %@", appleMarketingVersion); // fetch from Info.plist
+#if DEBUG
+	NSLog(@"VersionXController awakeFromNib has been called."); 
 #endif
-
 	
+	// to easily wire up custom about panels, regardless of context, 
+	// we call init when VersionXController has been involked by awakeFromNib.
+	[self init];
+		
 	return;
 }
 
@@ -148,13 +120,11 @@
     commitStatusLong = VERSION_X_COMMIT_STATUS_LONG ;
 	
 	// to easily wire up custom about panels
-	//myFancyApplicationName = [self fancyApplicationName];
-	//myFancyFullVersion = [self fancyFullVersion];
-	//myFancyMarketingVersion = [self fancyMarketingVersion];
-	//myFancyBuildVersion = [self fancyBuildVersion];
-	
+	[self fancyPopulateMyFields];
+		
 	
 #if DEBUG
+	NSLog(@"VersionX init method has been called.");
 		
 	NSLog(@"VersionX Build Date: %@", buildDate);
 	NSLog(@"VersionX Build User: %@", buildUser);
@@ -306,24 +276,24 @@
 	}
 }
 
+/*!
+    @method     - (IBAction)showAboutPanel:(id)sender
+    @abstract   Constructs fancy version strings, fronts a Standard About Panel.
+    @discussion Typically you won't need to modify this method.  
+				If you want a Standard About Panel, with the default VersionX 
+					version string construction behavior, invoke this method
+					from the "About" menu item by making a connection in Interface Builder,
+					and you won't need to modify anything. It passes a dictionary
+					of options to the Standard About Panel.
+*/
 - (IBAction)showAboutPanel:(id)sender { 
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	
-	// Do NOT customize this!
-	// customize the methods whose names begin with "fancy".
-	//
 	// This method simply gathers the information from other places, and fronts a Standard About Panel.
 	//
-	// The standard About panel uses two bits of information to create the version string.
-	//
-	// Suppose you want to do something which encodes a little more information, like this:
-	//		Safari 2.1 β42 (61f95c8:12 "Dirty")
-	//		Which says:
-	//			Marketing version is:  Safari 2.1 (on the web site, in the ads, in the Finder, etc.)
-	//			Beta 42 
-	//			Git Commit at the HEAD of the working copy used to build the product: 61f95c8
-	//			12 commits after the last version tag // this is the design intent, but the script might be sending us the full commit count
-	//			Commit status is "Dirty" because the build took place on a working copy with uncommitted changes.
+	// The standard About panel uses two bits of information to create the version string,
+	
+	//    plus one additional value, the Application Name.
 	
 	NSString *myApplicationName = [self fancyApplicationName];
 	NSString *myVersion = [self fancyBuildVersion];
@@ -341,7 +311,7 @@
 	
 #if DEBUG
 	// print all key-value pairs from the dictionary
-	NSLog (@"The dictionary for the About panel contains the following key pairs:\n");
+	NSLog (@"The options dictionary for the Standard About Panel contains the following key pairs:\n");
 	for ( NSString *key in options )
 		NSLog (@"%@:\t\t\t%@", key, [options  objectForKey: key]);
 #endif
@@ -352,6 +322,17 @@
 	return;
 } 
 
+/*!
+    @method     - (IBAction)showCustomAboutPanel:(id)sender
+    @abstract   Simply fronts the simple Custom About Panel in the VersionX demo app.
+    @discussion Customize this method (and an accompanying Interface Builder NIB/XIB file)
+					if you want your Custom About Panel code to be managed inside the 
+					VersionX Controller. 
+				In most cases, you'll probably ignore this method, and not customize it.
+					You can easily wire up your existing Custom About Panel to use VersionX,
+					with minor modification to your pre-existing code for your Custom About Panel, 
+					whereever that code happens to be resident.  
+*/
 - (IBAction)showCustomAboutPanel:(id)sender {
 	
 	if ( !customAboutPanel )
@@ -366,11 +347,18 @@
 	return;
 }
 
+/*!
+    @method     - (IBAction) doneShowingCustomAboutPanel:(id)Sender
+    @abstract   A template and place holder, likely to be needed by certain fancy Custom About Panels.
+    @discussion Customize this method if your fancy Custom About Panel needs it.  Otherwise, ignore it.
+				It appears that this method may be needed by certain Custom About Panels,
+					so we include it here.  However, it's not required by the demonstration app's
+					(very simple) Custom About Panel, so it does nothing. 
+*/
 - (IBAction) doneShowingCustomAboutPanel:(id)Sender {
-	// it seems like this method might be required in some cases, 
-	// yet it doesn't seem to be required for the demo app.  
 	return;
 }
+
 /*!
     @method     - (IBAction)showVersionDetailSheet:(id)Sender
     @abstract   Display the full set of version related macros on a sheet.
@@ -381,8 +369,6 @@
 - (IBAction)showVersionDetailSheet:(id)Sender {
 
 	// show our fancy versions
-	[fancyApplicationNameField setStringValue: [self fancyApplicationName] ];
-	[fancyFullVersionField setStringValue: [self fancyFullVersion] ];
 	[fancyMarketingVersionField setStringValue: [self fancyMarketingVersion] ];
 	[fancyBuildVersionField setStringValue: [self fancyBuildVersion] ];
 
@@ -422,7 +408,7 @@
 	// to construct the Application Name, for non-Release build styles, we append the build style: (Debug)
 
 	// first we read the current application name from the application's Info.plist dictionary...
-	NSString* xversionappname = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+	NSString* xversionappname = [[[NSBundle bundleForClass: [self class]] infoDictionary] objectForKey:@"CFBundleName"];
 #if DEBUG
 	NSLog(@"VersionX App Name: %@", xversionappname);
 #endif
@@ -445,18 +431,32 @@
 		return [xversionappnameother autorelease];
 	}
 }
-- (NSString *)fancyBuildVersion {
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	
-		// Customize this!
-	// construct the "Build Version" e.g. (61f95c8:12 "Dirty")
-	NSString *myFancyBuildVersion = [NSString stringWithFormat:@"%@:%@ \"%@\"", commitShort, buildCount, commitStatus];
 
-	[myFancyBuildVersion retain];
-	[pool drain];
-	return [myFancyBuildVersion autorelease];
-}
 
+/*!
+    @method     - (NSString *)fancyMarketingVersion
+    @abstract   Constructs a fancy Marketing Version and returns it in a string.
+	@discussion Customize this method, if you want to display "Marketing Version" information differently from
+					the default VersionX behavior.
+ 
+				Suppose you want to do something which encodes a little more 
+					information about your application version, like this:
+ 
+					Safari 2.1 β42 (61f95c8:12 "Dirty")
+				
+				Which includes two components:
+ 
+					Marketing Version:		Safari 2.1 β42 
+					Build Version:			(61f95c8:12 "Dirty")
+ 
+				Which says:
+					Marketing version is:  Safari 2.1 (which you use the web site, in the ads, in the Finder, etc.)
+					Beta 42 (shown in the About Panel)
+					Git Commit at the HEAD of the working copy used to build the product: 61f95c8
+					12 commits after the last version tag  (NOTE: this is the design intent, but the script might be sending us the full commit count)
+					Commit status is "Dirty" because the build took place on a working copy with uncommitted changes.
+ 
+*/
 - (NSString *)fancyMarketingVersion {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	// NSString *myFancyMarketingVersion = [[NSString alloc] init];
@@ -465,7 +465,7 @@
 	
 	
 	// read the current application name from the application's Info.plist dictionary...
-	NSString *xversionappname = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+	NSString *xversionappname = [[[NSBundle bundleForClass: [self class]] infoDictionary] objectForKey:@"CFBundleName"];
 #if DEBUG
 	NSLog(@"App Name from Info.plist: %@", xversionappname);
 #endif
@@ -492,6 +492,40 @@
 	}
 }
 
+/*!
+	@method     - (NSString *)fancyBuildVersion
+	@abstract   Constructs the fancy "Build Version", which is the part between the parens in "Version 4.0.3 (6531.9)"
+	@discussion Customize this method if you want to display "Build Version" information differently from
+					the default VersionX behavior.  
+ */
+- (NSString *)fancyBuildVersion {
+	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+	
+	
+	// for Release build styles, we don't display a "Clean" commitStatus...
+	//		example:	(6f5071e:0)
+	if (([buildStyle isEqualToString: @"Release"] == YES) && ([commitStatus isEqualToString: @"Clean"] == YES)) {
+		NSString *myFancyBuildVersion = [NSString stringWithFormat:@"%@:%@", commitShort, buildCount];
+		[myFancyBuildVersion retain];
+		[pool drain];
+		return [myFancyBuildVersion autorelease];
+	}
+	else {
+		// For any other build style, or if Grungy, we include the commitStatus...
+		//	example:	(6f5071e:0 "Grungy")
+		NSString *myFancyBuildVersion = [NSString stringWithFormat:@"%@:%@ \"%@\"", commitShort, buildCount, commitStatus];
+		[myFancyBuildVersion retain];
+		[pool drain];
+		return [myFancyBuildVersion autorelease];
+	}
+}
+
+/*!
+    @method     - (NSString *)fancyFullVersion
+    @abstract   Constructs and returns full version string, such as:  "Safari 2.1 (6f5071e)"
+    @discussion Typically you won't customize this method.  
+				It constructs the full version string from the fancyMarketingVersion and fancyBuildVersion.
+*/
 - (NSString *)fancyFullVersion {
 	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 	// construct the full version and return it in a string
@@ -503,6 +537,22 @@
 	[pool drain];
 	return [myFancyFullVersion autorelease];
 }
+
+/*!
+    @method     -(void) fancyPopulateMyFields
+    @abstract   Populates text fields which display the version strings in text fields.
+    @discussion Typically you won't customize this method.  
+				It's invoked from the init method, which in turn is invoked
+					by our awakeFromNib, so that these fields are populated in the same way
+					regardless of the running context of the VersionXController.
+*/
+-(void) fancyPopulateMyFields {
+	
+	// Typically you'll display the fancyApplicationName and fancyFullVersion fields,
+	// and won't need to modify this method.
+	[fancyApplicationNameField setStringValue: [self fancyApplicationName] ];
+	[fancyFullVersionField setStringValue: [self fancyFullVersion] ];
+}	
 
 - (void) dealloc
 {

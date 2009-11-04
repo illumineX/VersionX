@@ -64,6 +64,9 @@
 - (IBAction)showCustomAboutPanel:(id)sender; 
 - (IBAction)doneShowingCustomAboutPanel:(id)sender; 
 
+// to populate the fieilds when the equivalent showCustomAboutPanel method is in an object other than VersionXController 
+-(void) fancyPopulateMyFields;
+
 // for the Version Detail Sheet
 - (IBAction)showVersionDetailSheet:(id)sender;
 - (IBAction)doneShowingVersionDetailSheet:(id)sender;
