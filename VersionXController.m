@@ -88,18 +88,16 @@
 	NSLog(@"VersionXController awakeFromNib has been called."); 
 #endif
 	
-	// to easily wire up custom about panels, regardless of context, 
-	// we call init when VersionXController has been involked by awakeFromNib.
-	[self init];
-		
-	return;
+	// VersionXController may be invoked from source code, or from a nib
+    // to easily wire up custom about panels
+	[self fancyPopulateMyFields];
+
+//	return;
 }
 
 -(id)init {
 	// initialization  
 	
-	//	if (! (self = [super init])) return nil;
-    // if (![super init]) return nil;
 	if (self = [super init]) {
 			
 	// set the instance variables from the macros for greater convenience in this controller
@@ -137,8 +135,6 @@
     commitStatusShort =  VERSION_X_COMMIT_STATUS_SHORT ;
     commitStatusLong = VERSION_X_COMMIT_STATUS_LONG ;
 	
-	// to easily wire up custom about panels
-	[self fancyPopulateMyFields];
 		
 	
 #if DEBUG
@@ -223,92 +219,90 @@
 */
 - (NSString *)lifecycleFancyAbbreviation:(NSString *)myLifecycleShort {
 	
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	
-	// if the Life Cycle abbreviation appears in our table as a key, hand back the fancy greek letter value
-
-	if(myLifecycleShort){ 		
-		
-		NSMutableDictionary* fancyStages  = [[[NSMutableDictionary alloc] init] autorelease];
-		[fancyStages addEntriesFromDictionary:[[[NSDictionary alloc] initWithObjectsAndKeys: 
-											@"λ", @"?", // unknown (use a "?" to indicate a Lambda build, at tag time)
-											@"λ", @"UNSET", // UNSET (short lifecycle field was blank in tag message at tag time, script turns this to UNSET)
-											@"λ", @"", // A blank short lifecycle field probably shouldn't happen, but we set this to Lambda in case it does
-											@"χ", @"x", // experimental
-											@"χ", @"dev", // experimental
-											@"χ", @"devel", // experimental
-											@"α", @"a", // alpha
-											@"β", @"b", // beta
-											@"χ", @"X", // experimental
-											@"α", @"A", // alpha
-											@"β", @"B", // beta
-											
-											// open-source-style stable / unsable branches 
-											@"δ", @"u", // unstable
-											@"σ", @"s", // stable
-											@"Δ", @"U", // Unstable
-											@"Σ", @"S", // Stable 
-											
-											// common lifecycle stages that don't get translated to greek symbols
-											@"RC", @"RC", // Release Candidate 
-											@"GM", @"GM", // Golden Master
-											@"RTM", @"RTM", // Release to Marketing / Manufacturing
-											@"GA", @"GA", // General Availability
-												// but which do get translated to upper case for nice display
-											@"RC", @"rc", // Release Candidate
-											@"GM", @"gm", // Golden Master
-											@"RTM", @"rtm", // Release to Marketing / Manufacturing
-											@"GA", @"ga", // General Availability
-												
-											// Easer eggs, loosely justified on the basis of an alpha/mu/omega concept for stage names)
-											@"μ", @"moo", // Μμ (for sra, and pohl, for different reasons)
-											@"Μ", @"MOO", // Μμ
-											@"ω", @"o",		// omega
-											@"Ω", @"O",		// Omega
-											nil] autorelease]]; 
-		NSString* lifecycleShortFancy = [fancyStages objectForKey: myLifecycleShort];
+    @autoreleasepool {
+        // if the Life Cycle abbreviation appears in our table as a key, hand back the fancy greek letter value
+        
+        if(myLifecycleShort){
+            
+            NSMutableDictionary* fancyStages  = [[NSMutableDictionary alloc] init];
+            [fancyStages addEntriesFromDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:
+                                                    @"λ", @"?", // unknown (use a "?" to indicate a Lambda build, at tag time)
+                                                    @"λ", @"UNSET", // UNSET (short lifecycle field was blank in tag message at tag time, script turns this to UNSET)
+                                                    @"λ", @"", // A blank short lifecycle field probably shouldn't happen, but we set this to Lambda in case it does
+                                                    @"χ", @"x", // experimental
+                                                    @"χ", @"dev", // experimental
+                                                    @"χ", @"devel", // experimental
+                                                    @"α", @"a", // alpha
+                                                    @"β", @"b", // beta
+                                                    @"χ", @"X", // experimental
+                                                    @"α", @"A", // alpha
+                                                    @"β", @"B", // beta
+                                                    
+                                                    // open-source-style stable / unsable branches
+                                                    @"δ", @"u", // unstable
+                                                    @"σ", @"s", // stable
+                                                    @"Δ", @"U", // Unstable
+                                                    @"Σ", @"S", // Stable
+                                                    
+                                                    // common lifecycle stages that don't get translated to greek symbols
+                                                    @"RC", @"RC", // Release Candidate
+                                                    @"GM", @"GM", // Golden Master
+                                                    @"RTM", @"RTM", // Release to Marketing / Manufacturing
+                                                    @"GA", @"GA", // General Availability
+                                                    // but which do get translated to upper case for nice display
+                                                    @"RC", @"rc", // Release Candidate
+                                                    @"GM", @"gm", // Golden Master
+                                                    @"RTM", @"rtm", // Release to Marketing / Manufacturing
+                                                    @"GA", @"ga", // General Availability
+                                                    
+                                                    // Easer eggs, loosely justified on the basis of an alpha/mu/omega concept for stage names)
+                                                    @"μ", @"moo", // Μμ (for sra, and pohl, for different reasons)
+                                                    @"Μ", @"MOO", // Μμ
+                                                    @"ω", @"o",		// omega
+                                                    @"Ω", @"O",		// Omega
+                                                    nil]];
+            NSString* lifecycleShortFancy = [fancyStages objectForKey: myLifecycleShort];
 #if DEBUG
-		NSLog(@"lifecycleFancyAbbreviation from: %@ to %@", myLifecycleShort, lifecycleShortFancy);
+            NSLog(@"lifecycleFancyAbbreviation from: %@ to %@", myLifecycleShort, lifecycleShortFancy);
 #endif
-		//	[fancyStages release];
-		return lifecycleShortFancy;
-	}
-	else {
-		// Customize this!
-		// if the Life Cycle abbreviation arrived set to anything else at tag time, we have a choice to make.
-		//
-		// Option A (the default behavior for the VersionX project)
-		// Lambda is the "undefined" lifecycle stage, e.g. we don't know at tag time what stage it is
-		// return lambda to enforce use of a commonly recognized convention
-		// all of your short lifecycle codes must be in the translation table, above
-		//
-		NSString *lambda = @"λ";
-		[pool drain];
-		return lambda;
-		
-		// Option B
-		// ...Or, simply hand it back, unchanged 
-		// (you might have your own convention and want anything undefined to pass through)
-		//
-		// [pool drain];
-		// return lifecycleShort;
-
-	}
-}
-
-/*!
-    @method     - (IBAction)showAboutPanel:(id)sender
-    @abstract   Constructs fancy version strings, fronts a Standard About Panel.
-    @discussion Typically you won't need to modify this method.  
-				If you want a Standard About Panel, with the default VersionX 
-					version string construction behavior, invoke this method
-					from the "About" menu item by making a connection in Interface Builder,
-					and you won't need to modify anything. It passes a dictionary
-					of options to the Standard About Panel.
-*/
-- (IBAction)showAboutPanel:(id)sender { 
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	
+            //	[fancyStages release];
+            return lifecycleShortFancy;
+        }
+        else {
+            // Customize this!
+            // if the Life Cycle abbreviation arrived set to anything else at tag time, we have a choice to make.
+            //
+            // Option A (the default behavior for the VersionX project)
+            // Lambda is the "undefined" lifecycle stage, e.g. we don't know at tag time what stage it is
+            // return lambda to enforce use of a commonly recognized convention
+            // all of your short lifecycle codes must be in the translation table, above
+            //
+            NSString *lambda = @"λ";
+            return lambda;
+            
+            // Option B
+            // ...Or, simply hand it back, unchanged 
+            // (you might have your own convention and want anything undefined to pass through)
+            //
+            // [pool drain];
+            // return lifecycleShort;
+            
+        }
+    }
+    
+    /*!
+     @method     - (IBAction)showAboutPanel:(id)sender
+     @abstract   Constructs fancy version strings, fronts a Standard About Panel.
+     @discussion Typically you won't need to modify this method.  
+     If you want a Standard About Panel, with the default VersionX 
+     version string construction behavior, invoke this method
+     from the "About" menu item by making a connection in Interface Builder,
+     and you won't need to modify anything. It passes a dictionary
+     of options to the Standard About Panel.
+     */
+    }
+- (IBAction)showAboutPanel:(id)sender {
+    @autoreleasepool {
 	// This method simply gathers the information from other places, and fronts a Standard About Panel.
 	//
 	// The standard About panel uses two bits of information to create the version string,
@@ -320,13 +314,13 @@
 	NSString *myApplicationVersion = [self fancyMarketingVersion];
 
 	// construct the options dictionary for the Standard About Panel
-	NSMutableDictionary* options  = [[[NSMutableDictionary alloc] init] autorelease];
+	NSMutableDictionary* options  = [[NSMutableDictionary alloc] init];
 	if(myVersion && myApplicationVersion && myApplicationName){ 		
-		[options addEntriesFromDictionary:[[[NSDictionary alloc] initWithObjectsAndKeys:
+		[options addEntriesFromDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:
 					myApplicationName, @"ApplicationName",
 					myApplicationVersion, @"ApplicationVersion",
-					myVersion, @"Version", 
-					nil] autorelease]]; 
+					myVersion, @"Version",
+					nil]]; 
 	}
 	
 #if DEBUG
@@ -338,7 +332,6 @@
 	
 	// [NSApp orderFrontStandardAboutPanelWithOptions:options ]; 	
 	[[NSApplication sharedApplication] orderFrontStandardAboutPanelWithOptions:options];
-	[pool drain];
 	return;
 } 
 
@@ -353,6 +346,7 @@
 					with minor modification to your pre-existing code for your Custom About Panel, 
 					whereever that code happens to be resident.  
 */
+}
 - (IBAction)showCustomAboutPanel:(id)sender {
 	
 	if ( !customAboutPanel )
@@ -424,142 +418,130 @@
 }
 
 - (NSString *)fancyApplicationName {
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-
-	// to construct the Application Name, for non-Release build styles, we append the build style: (Debug)
-
-	// first we read the current application name from the application's Info.plist dictionary...
-	NSString* xversionappname = [[[NSBundle bundleForClass: [self class]] infoDictionary] objectForKey:@"CFBundleName"];
+    @autoreleasepool {
+        // to construct the Application Name, for non-Release build styles, we append the build style: (Debug)
+        
+        // first we read the current application name from the application's Info.plist dictionary...
+        NSString* xversionappname = [[[NSBundle bundleForClass: [self class]] infoDictionary] objectForKey:@"CFBundleName"];
 #if DEBUG
-	NSLog(@"VersionX App Name: %@", xversionappname);
+        NSLog(@"VersionX App Name: %@", xversionappname);
 #endif
-	// for Release build styles, we simply return the name, unmodified
-	if ([buildStyle isEqualToString: @"Release"] == YES) {
-		[pool drain];
-		return xversionappname;
-	}
-	else {
-		// For any other build style, we write it back, appending the build style:  " (Debug)"
-		// But first we convert the build style to upper case for display
-		NSString *buildStyleUpperCase = [buildStyle uppercaseString];
-		NSString *xversionappnameother = [NSString stringWithFormat:@"%@ (%@)", xversionappname, buildStyleUpperCase];
+        // for Release build styles, we simply return the name, unmodified
+        if ([buildStyle isEqualToString: @"Release"] == YES) {
+            return xversionappname;
+        }
+        else {
+            // For any other build style, we write it back, appending the build style:  " (Debug)"
+            // But first we convert the build style to upper case for display
+            NSString *buildStyleUpperCase = [buildStyle uppercaseString];
+            NSString *xversionappnameother = [NSString stringWithFormat:@"%@ (%@)", xversionappname, buildStyleUpperCase];
 #if DEBUG
-		NSLog(@"VersionX App Name for build styles other than Release: %@", xversionappnameother);
-#endif		
-
-		[xversionappnameother retain];
-		[pool drain];
-		return [xversionappnameother autorelease];
-	}
-}
-
-
-/*!
-    @method     - (NSString *)fancyMarketingVersion
-    @abstract   Constructs a fancy Marketing Version and returns it in a string.
-	@discussion Customize this method, if you want to display "Marketing Version" information differently from
-					the default VersionX behavior.
- 
-				Suppose you want to do something which encodes a little more 
-					information about your application version, like this:
- 
-					Safari 2.1 β42 (61f95c8:12 "Grungy")
-				
-				Which includes two components:
- 
-					Marketing Version:		Safari 2.1 β42 
-					Build Version:			(61f95c8:12 "Grungy")
- 
-				Which says:
-					Marketing version is:  Safari 2.1 (which you use the web site, in the ads, in the Finder, etc.)
-					Beta 42 (shown in the About Panel)
-					Git Commit at the HEAD of the working copy used to build the product: 61f95c8
-					12 commits after the last version tag  (NOTE: this is the design intent, but the script might be sending us the full commit count)
-					Commit status is "Grungy" because the build took place on a working copy with uncommitted changes.
- 
-*/
+            NSLog(@"VersionX App Name for build styles other than Release: %@", xversionappnameother);
+#endif
+            
+            return xversionappnameother;
+        }
+    }
+    
+    
+    /*!
+     @method     - (NSString *)fancyMarketingVersion
+     @abstract   Constructs a fancy Marketing Version and returns it in a string.
+     @discussion Customize this method, if you want to display "Marketing Version" information differently from
+     the default VersionX behavior.
+     
+     Suppose you want to do something which encodes a little more
+     information about your application version, like this:
+     
+     Safari 2.1 β42 (61f95c8:12 "Grungy")
+     
+     Which includes two components:
+     
+     Marketing Version:		Safari 2.1 β42
+     Build Version:			(61f95c8:12 "Grungy")
+     
+     Which says:
+     Marketing version is:  Safari 2.1 (which you use the web site, in the ads, in the Finder, etc.)
+     Beta 42 (shown in the About Panel)
+     Git Commit at the HEAD of the working copy used to build the product: 61f95c8
+     12 commits after the last version tag  (NOTE: this is the design intent, but the script might be sending us the full commit count)
+     Commit status is "Grungy" because the build took place on a working copy with uncommitted changes.
+     
+     */
+    }
 - (NSString *)fancyMarketingVersion {
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	
-	// construct our marketing version and return it in a string 
-	
-	// translate the Life Cycle Abreviation into fancy greek for display 
-	NSString *myLifeCycleAbreviation = [self lifecycleFancyAbbreviation: lifecycleShort];
-
-	// don't display lifecycle stage for the final release, aka General Availability 
-	// (show it only for lambda, alpha, beta, etc.)
-	if ([myLifeCycleAbreviation isEqualToString: @"GA"] == YES) {
-		NSString *myFancyMarketingVersion = [NSString stringWithFormat:@"Version %@", versionShort];	
-		[myFancyMarketingVersion retain];
-		[pool drain];
-		return [myFancyMarketingVersion autorelease];
-
-	}
-	else {
-		// Customize This!
-		// now, construct the "Marketing Version" e.g. "Safari 2.1 β42"
-		NSString *myFancyMarketingVersion = [NSString stringWithFormat:@"Version %@ %@%@", versionShort, myLifeCycleAbreviation, commitCountSinceTag];
-		[myFancyMarketingVersion retain];
-		[pool drain];
-		return [myFancyMarketingVersion autorelease];
-	}
-}
-
-/*!
-	@method     - (NSString *)fancyBuildVersion
-	@abstract   Constructs the fancy "Build Version", which is the part between the parens in "Version 4.0.3 (6531.9)"
-	@discussion Customize this method if you want to display "Build Version" information differently from
-					the default VersionX behavior.  
- */
+	@autoreleasepool {
+        // construct our marketing version and return it in a string
+        
+        // translate the Life Cycle Abreviation into fancy greek for display
+        NSString *myLifeCycleAbreviation = [self lifecycleFancyAbbreviation: lifecycleShort];
+        
+        // don't display lifecycle stage for the final release, aka General Availability
+        // (show it only for lambda, alpha, beta, etc.)
+        if ([myLifeCycleAbreviation isEqualToString: @"GA"] == YES) {
+            NSString *myFancyMarketingVersion = [NSString stringWithFormat:@"Version %@", versionShort];
+            return myFancyMarketingVersion;
+            
+        }
+        else {
+            // Customize This!
+            // now, construct the "Marketing Version" e.g. "Safari 2.1 β42"
+            NSString *myFancyMarketingVersion = [NSString stringWithFormat:@"Version %@ %@%@", versionShort, myLifeCycleAbreviation, commitCountSinceTag];
+            return myFancyMarketingVersion;
+        }
+    }
+    
+    /*!
+     @method     - (NSString *)fancyBuildVersion
+     @abstract   Constructs the fancy "Build Version", which is the part between the parens in "Version 4.0.3 (6531.9)"
+     @discussion Customize this method if you want to display "Build Version" information differently from
+     the default VersionX behavior.  
+     */
+    }
 - (NSString *)fancyBuildVersion {
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	
-	
-	// for Release build styles, we don't display a "Clean" commitStatus...
-	//		example:	(6f5071e:0)
-	if (([buildStyle isEqualToString: @"Release"] == YES) && ([commitStatus isEqualToString: @"Clean"] == YES)) {
-		NSString *myFancyBuildVersion = [NSString stringWithFormat:@"%@:%@", commitShort, commitCountSinceTag];
-		[myFancyBuildVersion retain];
-		[pool drain];
-		return [myFancyBuildVersion autorelease];
-	}
-	else {
-		// For any other build style, or if Grungy, we include the commitStatus...
-		//	example:	(6f5071e:0 "Grungy")
-		NSString *myFancyBuildVersion = [NSString stringWithFormat:@"%@:%@ \"%@\"", commitShort, commitCountSinceTag, commitStatus];
-		[myFancyBuildVersion retain];
-		[pool drain];
-		return [myFancyBuildVersion autorelease];
-	}
-}
+    @autoreleasepool {
+    // for Release build styles, we don't display a "Clean" commitStatus...
+        //		example:	(6f5071e:0)
+        if (([buildStyle isEqualToString: @"Release"] == YES) && ([commitStatus isEqualToString: @"Clean"] == YES)) {
+            NSString *myFancyBuildVersion = [NSString stringWithFormat:@"%@:%@", commitShort, commitCountSinceTag];
+            return myFancyBuildVersion;
+        }
+        else {
+            // For any other build style, or if Grungy, we include the commitStatus...
+            //	example:	(6f5071e:0 "Grungy")
+            NSString *myFancyBuildVersion = [NSString stringWithFormat:@"%@:%@ \"%@\"", commitShort, commitCountSinceTag, commitStatus];
+            return myFancyBuildVersion;
+        }
+    }
+    
+    /*!
+     @method     - (NSString *)fancyFullVersion
+     @abstract   Constructs and returns full version string, such as:  "Safari 2.1 (6f5071e)"
+     @discussion Typically you won't customize this method.  
+     It constructs the full version string from the fancyMarketingVersion and fancyBuildVersion.
+     */
 
-/*!
-    @method     - (NSString *)fancyFullVersion
-    @abstract   Constructs and returns full version string, such as:  "Safari 2.1 (6f5071e)"
-    @discussion Typically you won't customize this method.  
-				It constructs the full version string from the fancyMarketingVersion and fancyBuildVersion.
-*/
+    }
 - (NSString *)fancyFullVersion {
-	NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-	// construct the full version and return it in a string
-	//	by calling vxMarketingVersion and combining it with vxBuildVersion
-	
-	NSString *myFancyFullVersion = [NSString stringWithFormat:@"%@ (%@)", [self fancyMarketingVersion], [self fancyBuildVersion] ];
-	
-	[myFancyFullVersion retain];
-	[pool drain];
-	return [myFancyFullVersion autorelease];
-}
-
-/*!
-    @method     -(void) fancyPopulateMyFields
-    @abstract   Populates text fields which display the version strings in text fields.
-    @discussion Typically you won't customize this method.  
-				It's invoked from the init method, which in turn is invoked
-					by our awakeFromNib, so that these fields are populated in the same way
-					regardless of the running context of the VersionXController.
-*/
--(void) fancyPopulateMyFields {
+    @autoreleasepool {
+        // construct the full version and return it in a string
+        //	by calling vxMarketingVersion and combining it with vxBuildVersion
+        
+        NSString *myFancyFullVersion = [NSString stringWithFormat:@"%@ (%@)", [self fancyMarketingVersion], [self fancyBuildVersion] ];
+        
+        return myFancyFullVersion;
+    }
+    
+    /*!
+     @method     -(void) fancyPopulateMyFields
+     @abstract   Populates text fields which display the version strings in text fields.
+     @discussion Typically you won't customize this method.
+     It's invoked from the init method, which in turn is invoked
+     by our awakeFromNib, so that these fields are populated in the same way
+     regardless of the running context of the VersionXController.
+     */
+        
+    }	-(void) fancyPopulateMyFields {
 	
 	// Typically you'll display the fancyApplicationName and fancyFullVersion fields,
 	// and won't need to modify this method.
@@ -567,24 +549,5 @@
 	[fancyFullVersionField setStringValue: [self fancyFullVersion] ];
 }	
 
-- (void) dealloc
-{
-    [branch release];
-    [commitTag release];
-    [commitCount release];
-    [commitShort release];
-    [commitLong release];
-    [versionShort release];
-    [versionLong release];
-    [buildCount release];
-    [buildDate release];
-    [lifecycleFamily release];
-    [lifecycleShort release];
-    [lifecycleLong release];
-    [commitStatus release];
-    [commitStatusShort release];
-    [commitStatusLong release];
-    [super dealloc];
-}
 
 @end
