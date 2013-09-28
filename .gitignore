@@ -1,27 +1,48 @@
 # Mac OS X Finder and whatnot 
 .DS_Store
+.Trashes 
 
 # Sparkle distribution Private Key
 dsa_priv.pem
 
-# XCode (and ancestors) per-user config 
+# Xcode (and ancestors) per-user config 
 *.mode1
 *.mode1v3
 *.mode2v3
 *.perspective
 *.perspectivev3
 *.pbxuser
+xcuserdata/
 
-# Xcode 4
-xcuserdata
+#  Whitelist the Xcode defaults
+!default.mode1
+!default.mode1v3
+!default.mode2v3
+!default.perspective
+!default.perspectivev3
+!default.pbxuser
+
+# Xcode 4 - Deprecated classes
+*.moved-aside
+
+# Xcode 
+*.hmap
+
+#JetBrains AppCode
+.idea/
 
 # Generated files
 VersionX-revision.h
 version.xcconfig
 
 # build products 
+DerivedData/
 build/
+adhoc/
 *.[oa]
+
+# CocoaPods
+Pods/
 
 # Other source repository archive directories 
 .hg
