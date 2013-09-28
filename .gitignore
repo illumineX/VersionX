@@ -27,9 +27,13 @@ xcuserdata/
 
 # Xcode 
 *.hmap
+*.xccheckout
 
-#JetBrains AppCode
+# JetBrains AppCode
 .idea/
+
+# TextMate
+*.tm_build_errors
 
 # Generated files
 VersionX-revision.h
@@ -59,3 +63,8 @@ profile
 Backup[ ]of[ ]*.pages/
 Backup[ ]of[ ]*.key/
 Backup[ ]of[ ]*.numbers/
+
+#Python modules and generated files
+MANIFEST
+dist/
+*.pyc
