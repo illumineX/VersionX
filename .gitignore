@@ -64,7 +64,29 @@ Backup[ ]of[ ]*.pages/
 Backup[ ]of[ ]*.key/
 Backup[ ]of[ ]*.numbers/
 
-#Python modules and generated files
+# Python modules and generated files
 MANIFEST
 dist/
 *.pyc
+
+# Ruby
+Gemfile.lock
+*.gem
+*.rbc
+rdoc
+
+# Miscellaneous
+.bundle
+.config
+.yardoc
+InstalledFiles
+_yardoc
+coverage
+doc/
+lib/bundler/man
+pkg
+spec/reports
+test/tmp
+test/version_tmp
+
+
