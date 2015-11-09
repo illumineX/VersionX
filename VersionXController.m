@@ -350,8 +350,19 @@
 - (IBAction)showCustomAboutPanel:(id)sender {
 	
 	if ( !customAboutPanel )
-		[NSBundle loadNibNamed:@"CustomAboutPanel" owner:self];
-	
+        {
+            if ([[NSBundle mainBundle] respondsToSelector:@selector(loadNibNamed:owner:topLevelObjects:)]) {
+                // We're running on Mountain Lion or higher
+                [[NSBundle mainBundle] loadNibNamed:@"CustomAboutPanel"
+                                              owner:self
+                                    topLevelObjects:nil];
+            } else {
+                // We're running on Lion, this will produce a Warning
+                [NSBundle loadNibNamed:@"CustomAboutPanel"
+                                 owner:self];
+            }
+        }
+    
 	// to easily wire up custom about panels
 	[fancyApplicationNameField setStringValue: [self fancyApplicationName] ];
 	[fancyFullVersionField setStringValue: [self fancyFullVersion] ];
