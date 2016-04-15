@@ -222,49 +222,66 @@
     @autoreleasepool {
         // if the Life Cycle abbreviation appears in our table as a key, hand back the fancy greek letter value
         
+#if DEBUG
+        NSLog(@"myLifecycleShort: %@", myLifecycleShort);
+#endif
+
         if(myLifecycleShort){
             
             NSDictionary* fancyStages  = @{
-                                           @"λ" : @"?", // unknown (use a "?" to indicate a Lambda build, at tag time)
-                                           @"λ" : @"UNSET", // UNSET (short lifecycle field was blank in tag message at tag time, script turns this to UNSET)
-                                           @"λ" : @"", // A blank short lifecycle field probably shouldn't happen, but we set this Lambda in case it does
-                                           @"χ" : @"x", // experimental
-                                           @"χ" : @"dev", // experimental
-                                           @"χ" : @"devel", // experimental
-                                           @"α" : @"a", // alpha
-                                           @"β" : @"b", // beta
-                                           @"χ" : @"X", // experimental
-                                           @"α" : @"A", // alpha
-                                           @"β" : @"B", // beta
+                                           // Key : Value
+                                           @"?" : @"λ" , // unknown (use a "?" to indicate a Lambda build, at tag time)
+                                           @"UNSET" : @"λ", // UNSET (short lifecycle field was blank in tag message at tag time, script turns this to UNSET)
+                                           @"": @"λ" , // A blank short lifecycle field probably shouldn't happen, but we set this Lambda in case it does
+                                           @"x" : @"χ", // experimental
+                                           @"X" : @"χ", // experimental
+                                           @"dev" : @"χ", // experimental
+                                           @"devel" : @"χ", // experimental
+                                           @"develop" : @"χ", // experimental
+                                           @"development" : @"χ", // experimental
+                                           @"a": @"α" , // alpha
+                                           @"A": @"α" , // alpha
+                                           @"b": @"β" , // beta
+                                           @"B": @"β" , // beta
                                            
                                            // open-source-style stable / unsable branches
-                                           @"δ" : @"u", // unstable
-                                           @"σ" : @"s", // stable
-                                           @"Δ" : @"U", // Unstable
-                                           @"Σ" : @"S", // Stable
+                                           @"u": @"δ" , // unstable
+                                           @"s": @"σ" , // stable
+                                           @"U": @"Δ" , // Unstable
+                                           @"S": @"Σ" , // Stable
                                            
                                            // common lifecycle stages that don't get translated to greek symbols
                                            @"RC" : @"RC", // Release Candidate
                                            @"GM" : @"GM", // Golden Master
                                            @"RTM" : @"RTM", // Release to Marketing / Manufacturing
-                                           @"GA" : @"GA", // General Availability
+                                           @"GA": @"GA", // General Availability
                                            
                                            // but which do get translated to upper case for nice display
                                            @"RC" : @"rc", // Release Candidate
+                                           @"RC" : @"Rc", // Release Candidate
+                                           @"RC" : @"rC", // Release Candidate
                                            @"GM" : @"gm", // Golden Master
+                                           @"GM" : @"Gm", // Golden Master
+                                           @"GM" : @"gM", // Golden Master
                                            @"RTM" : @"rtm", // Release to Marketing / Manufacturing
+                                           @"RTM" : @"Rtm", // Release to Marketing / Manufacturing
                                            @"GA" : @"ga", // General Availability
-
+                                           @"GA" : @"Ga", // General Availability
+                                           @"GA" : @"gA", // General Availability
+                                           
                                            // Easer eggs, loosely justified on the basis of an alpha/mu/omega concept for stage names)
-                                           @"μ" : @"moo", // Μμ (for sra, and pohl, for different reasons)
-                                           @"Μ" : @"MOO", // Μμ
-                                           @"ω" : @"o",		// omega
-                                           @"Ω" : @"O",		// Omega
+                                           @"moo" : @"μ", // Μμ (for sra, and pohl, for different reasons)
+                                           @"MOO" : @"Μ", // Μμ
+                                           @"o" : @"ω", // omega
+                                           @"O" : @"Ω", // Omega
                                            };
             
-            NSString* lifecycleShortFancy = [fancyStages objectForKey: myLifecycleShort];
+            NSString* lifecycleShortFancy = fancyStages[myLifecycleShort];
+
 #if DEBUG
             NSLog(@"lifecycleFancyAbbreviation from: %@ to %@", myLifecycleShort, lifecycleShortFancy);
+            NSLog(@"The Dictionary: %@", fancyStages);
+
 #endif
             //	[fancyStages release];
             return lifecycleShortFancy;
@@ -310,25 +327,23 @@
 	
 	//    plus one additional value, the Application Name.
 	
-	NSString *myApplicationName = [self fancyApplicationName];
-	NSString *myVersion = [self fancyBuildVersion];
-	NSString *myApplicationVersion = [self fancyMarketingVersion];
+	NSString *myApplicationName = self.fancyApplicationName;
+	NSString *myVersion = self.fancyBuildVersion;
+	NSString *myApplicationVersion = self.fancyMarketingVersion;
 
 	// construct the options dictionary for the Standard About Panel
 	NSMutableDictionary* options  = [[NSMutableDictionary alloc] init];
 	if(myVersion && myApplicationVersion && myApplicationName){ 		
-		[options addEntriesFromDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:
-					myApplicationName, @"ApplicationName",
-					myApplicationVersion, @"ApplicationVersion",
-					myVersion, @"Version",
-					nil]]; 
+		[options addEntriesFromDictionary:@{@"ApplicationName": myApplicationName,
+					@"ApplicationVersion": myApplicationVersion,
+					@"Version": myVersion}]; 
 	}
 	
 #if DEBUG
 	// print all key-value pairs from the dictionary
 	NSLog (@"The options dictionary for the Standard About Panel contains the following key pairs:\n");
 	for ( NSString *key in options )
-		NSLog (@"%@:\t\t\t%@", key, [options  objectForKey: key]);
+		NSLog (@"%@:\t\t\t%@", key, options[key]);
 #endif
 	
 	// [NSApp orderFrontStandardAboutPanelWithOptions:options ]; 	
@@ -365,8 +380,8 @@
         }
     
 	// to easily wire up custom about panels
-	[fancyApplicationNameField setStringValue: [self fancyApplicationName] ];
-	[fancyFullVersionField setStringValue: [self fancyFullVersion] ];
+	fancyApplicationNameField.stringValue = self.fancyApplicationName ;
+	fancyFullVersionField.stringValue = self.fancyFullVersion ;
 	
     [customAboutPanel makeKeyAndOrderFront:nil];
 	
@@ -395,28 +410,28 @@
 - (IBAction)showVersionDetailSheet:(id)Sender {
 
 	// show our fancy versions
-	[fancyMarketingVersionField setStringValue: [self fancyMarketingVersion] ];
-	[fancyBuildVersionField setStringValue: [self fancyBuildVersion] ];
+	fancyMarketingVersionField.stringValue = self.fancyMarketingVersion ;
+	fancyBuildVersionField.stringValue = self.fancyBuildVersion ;
 
 	// and show the values we get from the repository which we use to construct them
-	[branchField setStringValue: branch];
-	[commitTagField setStringValue: commitTag];
-	[commitCountField setStringValue: commitCount];
-	[commitShortField setStringValue: commitShort];
-	[commitLongField setStringValue: commitLong];
-	[versionShortField setStringValue: versionShort];
-	[versionLongField setStringValue: versionLong];
-	[buildDateField setStringValue: buildDate];
-	[buildUserField setStringValue: buildUser];
-	[buildHostField setStringValue: buildHost];
-	[buildStyleField setStringValue: buildStyle];
-	[buildArchsField setStringValue: buildArchs];
-	[buildCountField setStringValue: buildCount];
-	[lifecycleLongField setStringValue: lifecycleLong];
-	[lifecycleShortField setStringValue: lifecycleShort];
-	[lifecycleFamilyField setStringValue: lifecycleFamily];
-	[commitStatusField setStringValue: commitStatus];
-	[commitStatusShortField setStringValue: commitStatusShort];
+	branchField.stringValue = branch;
+	commitTagField.stringValue = commitTag;
+	commitCountField.stringValue = commitCount;
+	commitShortField.stringValue = commitShort;
+	commitLongField.stringValue = commitLong;
+	versionShortField.stringValue = versionShort;
+	versionLongField.stringValue = versionLong;
+	buildDateField.stringValue = buildDate;
+	buildUserField.stringValue = buildUser;
+	buildHostField.stringValue = buildHost;
+	buildStyleField.stringValue = buildStyle;
+	buildArchsField.stringValue = buildArchs;
+	buildCountField.stringValue = buildCount;
+	lifecycleLongField.stringValue = lifecycleLong;
+	lifecycleShortField.stringValue = lifecycleShort;
+	lifecycleFamilyField.stringValue = lifecycleFamily;
+	commitStatusField.stringValue = commitStatus;
+	commitStatusShortField.stringValue = commitStatusShort;
 	[commitStatusLongView insertText: commitStatusLong];
 	
 	// display the values on the sheet
@@ -434,7 +449,7 @@
         // to construct the Application Name, for non-Release build styles, we append the build style: (Debug)
         
         // first we read the current application name from the application's Info.plist dictionary...
-        NSString* xversionappname = [[[NSBundle bundleForClass: [self class]] infoDictionary] objectForKey:@"CFBundleName"];
+        NSString* xversionappname = [NSBundle bundleForClass: [self class]].infoDictionary[@"CFBundleName"];
 #if DEBUG
         NSLog(@"VersionX App Name: %@", xversionappname);
 #endif
@@ -445,7 +460,7 @@
         else {
             // For any other build style, we write it back, appending the build style:  " (Debug)"
             // But first we convert the build style to upper case for display
-            NSString *buildStyleUpperCase = [buildStyle uppercaseString];
+            NSString *buildStyleUpperCase = buildStyle.uppercaseString;
             NSString *xversionappnameother = [NSString stringWithFormat:@"%@ (%@)", xversionappname, buildStyleUpperCase];
 #if DEBUG
             NSLog(@"VersionX App Name for build styles other than Release: %@", xversionappnameother);
@@ -539,7 +554,7 @@
         // construct the full version and return it in a string
         //	by calling vxMarketingVersion and combining it with vxBuildVersion
         
-        NSString *myFancyFullVersion = [NSString stringWithFormat:@"%@ (%@)", [self fancyMarketingVersion], [self fancyBuildVersion] ];
+        NSString *myFancyFullVersion = [NSString stringWithFormat:@"%@ (%@)", self.fancyMarketingVersion, self.fancyBuildVersion ];
         
         return myFancyFullVersion;
     }
@@ -557,8 +572,8 @@
 	
 	// Typically you'll display the fancyApplicationName and fancyFullVersion fields,
 	// and won't need to modify this method.
-	[fancyApplicationNameField setStringValue: [self fancyApplicationName] ];
-	[fancyFullVersionField setStringValue: [self fancyFullVersion] ];
+	fancyApplicationNameField.stringValue = self.fancyApplicationName ;
+	fancyFullVersionField.stringValue = self.fancyFullVersion ;
 }	
 
 
