@@ -70,12 +70,12 @@
 
 // In addition to the accessors for each bit bit of data from the repositories, 
 //		we want a few methods to support easy integration with custom About panels
-- (NSString *)fancyFullVersion; // don't customize this method (it's a convenience method which combines the other two)
-- (NSString *)fancyMarketingVersion; // Customize this!
-- (NSString *)fancyBuildVersion; // Customize this!
+@property (nonatomic, readonly, copy) NSString *fancyFullVersion; // don't customize this method (it's a convenience method which combines the other two)
+@property (nonatomic, readonly, copy) NSString *fancyMarketingVersion; // Customize this!
+@property (nonatomic, readonly, copy) NSString *fancyBuildVersion; // Customize this!
 
 // Return the modified application name, if a non-Release build style
-- (NSString *)fancyApplicationName;
+@property (nonatomic, readonly, copy) NSString *fancyApplicationName;
 
 // translate to fancy greek letters for display
 - (NSString *)lifecycleFancyAbbreviation:lifecycleShort;

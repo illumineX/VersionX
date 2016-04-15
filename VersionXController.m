@@ -95,7 +95,7 @@
 //	return;
 }
 
--(id)init {
+-(instancetype)init {
 	// initialization  
 	
 	if (self = [super init]) {
@@ -115,8 +115,8 @@
 	// @todo:  This derivation is likely to be specific to Git.  We can use buildRepository to set up cases for this.
 	NSArray *split = [VERSION_X_COMMIT_TAG componentsSeparatedByString:@"-"];
 		
-	if ((split != nil) && ([split count] == 3)) {
-		commitCountSinceTag = [split objectAtIndex:1];		
+	if ((split != nil) && (split.count == 3)) {
+		commitCountSinceTag = split[1];		
 	}
 	
 	else {
