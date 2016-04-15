@@ -169,10 +169,10 @@
 	NSLog(@"VersionX Commit Status Long: %@", commitStatusLong);	
 
 	// log the fancy methods we derive
-	NSLog(@"Fancy Application Name: %@", [self fancyApplicationName]);
-	NSLog(@"Fancy Marketing Version: %@", [self fancyMarketingVersion]);
-	NSLog(@"Fancy Build Version: %@", [self fancyBuildVersion]);
-	NSLog(@"Fancy Full Version: %@", [self fancyFullVersion]);	
+	NSLog(@"Fancy Application Name: %@", self.fancyApplicationName);
+	NSLog(@"Fancy Marketing Version: %@", self.fancyMarketingVersion);
+	NSLog(@"Fancy Build Version: %@", self.fancyBuildVersion);
+	NSLog(@"Fancy Full Version: %@", self.fancyFullVersion);	
 	
 #endif
 	}
@@ -224,43 +224,44 @@
         
         if(myLifecycleShort){
             
-            NSMutableDictionary* fancyStages  = [[NSMutableDictionary alloc] init];
-            [fancyStages addEntriesFromDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:
-                                                    @"λ", @"?", // unknown (use a "?" to indicate a Lambda build, at tag time)
-                                                    @"λ", @"UNSET", // UNSET (short lifecycle field was blank in tag message at tag time, script turns this to UNSET)
-                                                    @"λ", @"", // A blank short lifecycle field probably shouldn't happen, but we set this to Lambda in case it does
-                                                    @"χ", @"x", // experimental
-                                                    @"χ", @"dev", // experimental
-                                                    @"χ", @"devel", // experimental
-                                                    @"α", @"a", // alpha
-                                                    @"β", @"b", // beta
-                                                    @"χ", @"X", // experimental
-                                                    @"α", @"A", // alpha
-                                                    @"β", @"B", // beta
-                                                    
-                                                    // open-source-style stable / unsable branches
-                                                    @"δ", @"u", // unstable
-                                                    @"σ", @"s", // stable
-                                                    @"Δ", @"U", // Unstable
-                                                    @"Σ", @"S", // Stable
-                                                    
-                                                    // common lifecycle stages that don't get translated to greek symbols
-                                                    @"RC", @"RC", // Release Candidate
-                                                    @"GM", @"GM", // Golden Master
-                                                    @"RTM", @"RTM", // Release to Marketing / Manufacturing
-                                                    @"GA", @"GA", // General Availability
-                                                    // but which do get translated to upper case for nice display
-                                                    @"RC", @"rc", // Release Candidate
-                                                    @"GM", @"gm", // Golden Master
-                                                    @"RTM", @"rtm", // Release to Marketing / Manufacturing
-                                                    @"GA", @"ga", // General Availability
-                                                    
-                                                    // Easer eggs, loosely justified on the basis of an alpha/mu/omega concept for stage names)
-                                                    @"μ", @"moo", // Μμ (for sra, and pohl, for different reasons)
-                                                    @"Μ", @"MOO", // Μμ
-                                                    @"ω", @"o",		// omega
-                                                    @"Ω", @"O",		// Omega
-                                                    nil]];
+            NSDictionary* fancyStages  = @{
+                                           @"λ" : @"?", // unknown (use a "?" to indicate a Lambda build, at tag time)
+                                           @"λ" : @"UNSET", // UNSET (short lifecycle field was blank in tag message at tag time, script turns this to UNSET)
+                                           @"λ" : @"", // A blank short lifecycle field probably shouldn't happen, but we set this Lambda in case it does
+                                           @"χ" : @"x", // experimental
+                                           @"χ" : @"dev", // experimental
+                                           @"χ" : @"devel", // experimental
+                                           @"α" : @"a", // alpha
+                                           @"β" : @"b", // beta
+                                           @"χ" : @"X", // experimental
+                                           @"α" : @"A", // alpha
+                                           @"β" : @"B", // beta
+                                           
+                                           // open-source-style stable / unsable branches
+                                           @"δ" : @"u", // unstable
+                                           @"σ" : @"s", // stable
+                                           @"Δ" : @"U", // Unstable
+                                           @"Σ" : @"S", // Stable
+                                           
+                                           // common lifecycle stages that don't get translated to greek symbols
+                                           @"RC" : @"RC", // Release Candidate
+                                           @"GM" : @"GM", // Golden Master
+                                           @"RTM" : @"RTM", // Release to Marketing / Manufacturing
+                                           @"GA" : @"GA", // General Availability
+                                           
+                                           // but which do get translated to upper case for nice display
+                                           @"RC" : @"rc", // Release Candidate
+                                           @"GM" : @"gm", // Golden Master
+                                           @"RTM" : @"rtm", // Release to Marketing / Manufacturing
+                                           @"GA" : @"ga", // General Availability
+
+                                           // Easer eggs, loosely justified on the basis of an alpha/mu/omega concept for stage names)
+                                           @"μ" : @"moo", // Μμ (for sra, and pohl, for different reasons)
+                                           @"Μ" : @"MOO", // Μμ
+                                           @"ω" : @"o",		// omega
+                                           @"Ω" : @"O",		// Omega
+                                           };
+            
             NSString* lifecycleShortFancy = [fancyStages objectForKey: myLifecycleShort];
 #if DEBUG
             NSLog(@"lifecycleFancyAbbreviation from: %@ to %@", myLifecycleShort, lifecycleShortFancy);
