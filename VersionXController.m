@@ -257,17 +257,21 @@
                                            @"GA": @"GA", // General Availability
                                            
                                            // but which do get translated to upper case for nice display
-                                           @"RC" : @"rc", // Release Candidate
-                                           @"RC" : @"Rc", // Release Candidate
-                                           @"RC" : @"rC", // Release Candidate
-                                           @"GM" : @"gm", // Golden Master
-                                           @"GM" : @"Gm", // Golden Master
-                                           @"GM" : @"gM", // Golden Master
-                                           @"RTM" : @"rtm", // Release to Marketing / Manufacturing
-                                           @"RTM" : @"Rtm", // Release to Marketing / Manufacturing
-                                           @"GA" : @"ga", // General Availability
-                                           @"GA" : @"Ga", // General Availability
-                                           @"GA" : @"gA", // General Availability
+                                           @"Rc" : @"RC", // Release Candidate
+                                           @"rC" : @"RC", // Release Candidate
+                                           @"rc" : @"RC", // Release Candidate
+                                           @"Gm" : @"GM", // Golden Master
+                                           @"gM" : @"GM", // Golden Master
+                                           @"gm" : @"GM", // Golden Master
+                                           @"Rtm" : @"RTM", // Release to Marketing / Manufacturing
+                                           @"RTm" : @"RTM", // Release to Marketing / Manufacturing
+                                           @"rTM" : @"RTM", // Release to Marketing / Manufacturing
+                                           @"rtM" : @"RTM", // Release to Marketing / Manufacturing
+                                           @"rTm" : @"RTM", // Release to Marketing / Manufacturing
+                                           @"rtm" : @"RTM", // Release to Marketing / Manufacturing
+                                           @"Ga" : @"GA", // General Availability
+                                           @"gA" : @"GA", // General Availability
+                                           @"ga" : @"GA", // General Availability
                                            
                                            // Easer eggs, loosely justified on the basis of an alpha/mu/omega concept for stage names)
                                            @"moo" : @"μ", // Μμ (for sra, and pohl, for different reasons)
