@@ -3,9 +3,9 @@
 
 This project builds under Xcode 7 and runs on Mac OS X 10.11 (El Capitan).  (It probably runs on Mac OS X 10.7 and later).
 
-Documentation is presently hosted on the GitHub Wiki page for the proejct. 
+Documentation is presently hosted on the GitHub Wiki page for the project. 
 
-[VersionX](https://github.com/illumineX/VersionX/wiki)
+[VersionX Documentation](https://github.com/illumineX/VersionX/wiki)
 
 ### Dependencies ###
 
@@ -21,7 +21,7 @@ VersionX is a system which automatically gathers build version information at bu
 
 ### Contribution guidelines ###
 
-* Refactor into Swift, using modern APIs as appropriate (SpriteKit, CoreAnimation)
+* Refactor into Swift
 * Improve documentation in the source code for methods
 * [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
 
